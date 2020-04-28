@@ -135,7 +135,7 @@ function add_stream_post_type() {
 
 }
 
-function show_sponsors_shortcode( $atts = [], $title = '') {
+function show_sponsors_shortcode( $atts = []) {
   
     // normalize attribute keys, lowercase
     $atts = array_change_key_case((array)$atts, CASE_LOWER);
@@ -143,10 +143,12 @@ function show_sponsors_shortcode( $atts = [], $title = '') {
     // override default attributes with user attributes
     $sponsor_atts = shortcode_atts([
         'type' => 'major',
+        'title' => 'Major Sponsors',
         ], $atts);
     
     // get type
     $type = $sponsor_atts['type'];
+    $title = $sponsor_atts['title'];
 
     // start output
     $o = '';
@@ -167,11 +169,13 @@ function show_sponsors_shortcode( $atts = [], $title = '') {
     $all_sponsors = get_posts( $args );
 
     if( $all_sponsors ) {
-    
+		// widget title
+		$o .= '<h2 class="widget-title subheading heading-size-3">' . $title . '</h2>';
+		
         // start box
         $o .= '<div class="sponsor-wrapper"><ul class="sponsor-list">';
 
-        $o .= '<h2 class="widget-title subheading heading-size-3">' . $type . ' Sponsors</h2>';
+        
     
         foreach ( $all_sponsors as $post ) {
             $img = CFS()->get( 'sponsor_logo', $post->ID );
