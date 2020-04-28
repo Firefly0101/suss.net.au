@@ -77,10 +77,20 @@
 							}
 
 							$hasVideo = CFS()->get( 'video_embed_url', get_the_ID() );
+							// video options
+							$isAutoplay 	= CFS()->get( 'video_autoplay', get_the_ID() );
+							$isMuted		= 0;
+							if ($isAutoplay == 1 ) {
+								$isMuted	= 1;
+								$isAutoplay = true;
+							}
+							$isControls 	= CFS()->get( 'video_controls', get_the_ID() );
+							$isLoop 		= CFS()->get( 'video_loop', get_the_ID() );
+							$isTransparent 	= CFS()->get( 'video_transparent', get_the_ID() );
 
 							if (!empty($hasVideo) && wp_http_validate_url($hasVideo)==true) {
 								echo '<div id="cover-video">';
-								echo wp_oembed_get( $hasVideo, array( 'controls' => true, 'muted' => 1 , 'transparent'=>true, 'loop'=> true, 'autoplay' => true, 'color' => 'ffffff', 'portrait' => 0, 'title' => 0, 'byline' => 0 ) );
+								echo wp_oembed_get( $hasVideo, array( 'controls' => $isControls, 'muted' => $isMuted , 'transparent'=> $isTransparent, 'loop'=> $isLoop, 'autoplay' => $isAutoplay, 'color' => 'ffffff', 'portrait' => 0, 'title' => 0, 'byline' => 0 ) );
 								echo '</div>';
 							}
 
