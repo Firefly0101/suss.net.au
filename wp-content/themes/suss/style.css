@@ -1,0 +1,64 @@
+/*
+Theme Name: Twenty Twenty Child
+Theme URL: http://suss.net.au
+Description: Twenty Twenty Child Theme
+Author: FIrefly
+Author URL: http://fi.net.au
+Template: twentytwenty
+Version: 1.0.0
+Text Domain: twentytwenty-child
+*/ 
+
+/* Custom CSS */
+
+/* GENERAL */
+button:not(.toggle), .button, .faux-button, .wp-block-button__link, 
+.wp-block-file .wp-block-file__button, 
+input[type="button"], input[type="reset"], input[type="submit"], 
+.bg-accent, .bg-accent-hover:hover, .bg-accent-hover:focus, 
+:root .has-accent-background-color, .comment-reply-link     { background-color:#00ADFF;}
+
+/* PAGES */
+.page-template-default #site-content .entry-header          { background:#333; padding:1rem 0; margin:1rem 0; }
+.page-template-default #site-content .entry-header H1       { font-size:3rem; color:#999;}
+
+.page-template-default #site-content .post-inner            { padding-top:0;}
+
+
+/*****************
+* SPONSORS
+*****************/
+.footer-widgets-wrapper                     { flex-wrap:wrap; align-items: center; }
+.footer-widgets-wrapper .footer-widgets     { flex-basis:100%; margin-left:0; margin-bottom: 3rem; }
+.footer-widgets-wrapper .footer-widgets .widget-content { align-items: center; display: flex; flex-direction: column;}
+.footer-widgets-wrapper .footer-widgets .widget-content .textwidget { display:flex; align-items:center; }
+.footer-widgets-wrapper .footer-widgets .widget-content .textwidget .sponsor-wrapper { width:100%; }
+
+.sponsor-wrapper UL             { list-style: none; padding:0; margin:0; display:flex; flex-wrap: wrap; text-align: center;}
+.sponsor-wrapper UL LI          { padding:1rem; margin:0; max-width:320px; height:auto;}
+.sponsor-wrapper UL LI IMG      { padding:0; margin:0; width:100%; max-width:320px; height:auto;}
+
+
+/****************
+* WOOCOMMERCE
+****************/
+
+/* PRODUCTS */
+.woocommerce-loop-category__title .count                    { display: none; }
+ul.products li.product .price, 
+ul.products li.product .star-rating, 
+ul.products li.product .woocommerce-loop-product__title     { color:inherit;}
+
+/* CHECKOUT */
+.wc_payment_methods .payment_box p                          { color: initial; }
+
+
+/******************
+* RESPONSIVE
+*******************/
+@media ( max-width: 990px ) {
+    .footer-widgets-wrapper {
+        margin-left:0;
+        width:100%; 
+    }
+}
