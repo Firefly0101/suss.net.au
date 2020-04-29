@@ -49,3 +49,22 @@ function my_oembed_fetch_url( $provider, $url, $args ) {
 }
 
 add_filter( 'oembed_fetch_url', 'my_oembed_fetch_url', 10, 3 );
+
+function custom_user_product_purchased($pid) {
+    global $product;
+
+    $purchased = false;
+
+    if ( ! is_user_logged_in() ) {
+        return false;
+    }
+
+    $current_user = wp_get_current_user();
+
+    if ( wc_customer_bought_product( $current_user->user_email, $current_user->ID, $pid ) ) {
+        $purchased = true;
+        //echo '<div class="user-bought">&hearts; Hey ' . $current_user->first_name . ', you\'ve purchased this ticket</div>';
+    } 
+    
+    return $purchased;
+}
