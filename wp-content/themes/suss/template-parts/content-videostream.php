@@ -43,11 +43,17 @@
 				$isLoop 		= 0;
 				$isTransparent 	= 1; 
 
-				$msg = custom_user_product_purchased($relatedTicket);
+				$productURL = get_permalink( $relatedTicket );
+				$msg = 'no-session';
+
+				if ( is_user_logged_in() ) {
+					$msg = custom_user_product_purchased($relatedTicket);
+					$current_user = wp_get_current_user();
+				} 
 
 				if (!empty($hasVideo) && wp_http_validate_url($hasVideo)==true) {
 					switch($msg){
-						case true:
+						case 'true':
 							// show embed
 							// start video wrapper
 							echo '<div id="cover-video">';
@@ -56,20 +62,23 @@
 							echo '</div>';
 							break;
 	
-						case false:
+						case 'false':
 							// show link to register
-							$productURL = get_permalink( $relatedTicket );
-							echo '<p class="has-text-align-center">To watch this stream please reserve a ticket.</p>';
+							echo '<p class="has-text-align-center">&hearts; Hey ' . $current_user->first_name . ', to watch this stream please reserve a ticket.</p>';
 
 							echo '<div class="wp-block-buttons has-text-align-center"><div class="wp-block-button"><a href="' . $productURL . '" class="wp-block-button__link">Reserve Ticket</a></div></div>';
 							break;
+						case 'no-session':
+							echo '<div class="wp-block-buttons has-text-align-center"><p>If you are already a subscriber, please login to check if you have a ticket for this event.</p><div class="wp-block-button is-style-outline"><a href="' . $productURL . '" class="wp-block-button__link">Reserve a Ticket</a></div>
+						<div class="wp-block-button"><a href="'. wp_login_url(get_permalink(get_the_ID())) .'" class="wp-block-button__link">Subscriber Login</a></div></div>';
+							break;
 						
 						default:
-							echo '<div class="wp-block-buttons"><div class="wp-block-button"><a href="#" class="wp-block-button__link">Become a Subscriber</a></div>
-							<div class="wp-block-button is-style-outline"><a href="'. $productURL .'" class="wp-block-button__link">Login</a></div></div>';
+							echo 'oops';
 							
 					}
 				}
+				
 				
 				the_content( __( 'Continue reading', 'twentytwenty' ) );
 				
@@ -90,7 +99,9 @@
 			)
 		);
 
-		edit_post_link();
+		if (is_single()) {
+			edit_post_link();
+		}
 
 		// Single bottom post meta.
 		twentytwenty_the_post_meta( get_the_ID(), 'single-bottom' );

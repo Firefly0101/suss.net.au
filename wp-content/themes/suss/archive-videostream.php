@@ -89,6 +89,15 @@ get_header();
 			if ( ! is_search() ) {
 				get_template_part( 'template-parts/featured-image' );
 			}
+			$relatedTicket	= CFS()->get( 'related_ticket', get_the_ID() );
+			$relatedTicket = $relatedTicket[0]; // get item ID
+
+			$current_user = wp_get_current_user();
+			$msg = custom_user_product_purchased($relatedTicket);
+			
+			if ($msg == 'true'){
+				echo '<div class="badge-purchased">&hearts; Watch</div>';
+			}
 			//get_template_part( 'template-parts/content' , get_post_type() );
 			echo '</article>';
 		}

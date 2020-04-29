@@ -50,9 +50,10 @@
 				<div class="cover-color-overlay color-accent<?php echo esc_attr( $color_overlay_classes ); ?>"<?php echo $color_overlay_style; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- We need to double check this, but for now, we want to pass PHPCS ;) ?>></div>
 
 					<header class="entry-header has-text-align-center">
-						<div class="entry-header-inner section-inner medium">
 
 							<?php
+
+							
 
 							/**
 							 * Allow child themes and plugins to filter the display of the categories in the article header.
@@ -87,6 +88,14 @@
 							$isControls 	= CFS()->get( 'video_controls', get_the_ID() );
 							$isLoop 		= CFS()->get( 'video_loop', get_the_ID() );
 							$isTransparent 	= CFS()->get( 'video_transparent', get_the_ID() );
+
+							$videoClass = 'hasVideo';
+
+							if (!empty($hasVideo)) {
+								$videoClass = 'hasVideo';
+							} 
+
+							echo '<div class="entry-header-inner section-inner medium ' . $videoClass. '">';
 
 							if (!empty($hasVideo) && wp_http_validate_url($hasVideo)==true) {
 								echo '<div id="cover-video">';
@@ -132,9 +141,11 @@
 								twentytwenty_the_post_meta( get_the_ID(), 'single-top' );
 
 							}
+							echo '</div><!-- .entry-header-inner -->';
+
 							?>
 
-						</div><!-- .entry-header-inner -->
+						
 					</header><!-- .entry-header -->
 
 			</div><!-- .cover-header-inner -->

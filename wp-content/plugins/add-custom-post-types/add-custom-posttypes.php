@@ -59,7 +59,7 @@ function add_stream_post_type() {
 		'label'                 => __( 'Video Stream', 'suss' ),
 		'description'           => __( 'Video streaming content', 'suss' ),
 		'labels'                => $labels_stream,
-		'supports'              => array( 'title', 'editor', 'thumbnail', 'revisions', 'custom-fields', 'page-attributes' ),
+		'supports'              => array( 'title', 'editor', 'thumbnail', 'revisions', 'custom-fields', 'page-attributes' , 'comments'),
 		'taxonomies'            => array( 'category', 'post_tag' ),
 		'hierarchical'          => false,
 		'public'                => true,
@@ -75,6 +75,7 @@ function add_stream_post_type() {
 		'publicly_queryable'    => true,
 		'capability_type'       => 'page',
 		'show_in_rest'          => false,
+		
 	);
     register_post_type( 'videostream', $args_stream );
     
@@ -111,7 +112,7 @@ function add_stream_post_type() {
 		'label'                 => __( 'Sponsor', 'suss' ),
 		'description'           => __( 'Our sponsors', 'suss' ),
 		'labels'                => $labels_sponsor,
-		'supports'              => array( 'title', 'editor', 'revisions', 'custom-fields', 'page-attributes' ),
+		'supports'              => array( 'title', 'editor', 'revisions', 'custom-fields', 'page-attributes'),
 		//'taxonomies'            => array( 'category', 'post_tag' ),
 		'hierarchical'          => false,
 		'public'                => true,
@@ -126,7 +127,7 @@ function add_stream_post_type() {
 		'exclude_from_search'   => true,
 		'publicly_queryable'    => true,
 		'capability_type'       => 'page',
-		'show_in_rest'          => false,
+		'show_in_rest'          => false
 	);
 	register_post_type( 'sponsors', $args_sponsor);
 
