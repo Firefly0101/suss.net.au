@@ -50,9 +50,10 @@
 				<div class="cover-color-overlay color-accent<?php echo esc_attr( $color_overlay_classes ); ?>"<?php echo $color_overlay_style; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- We need to double check this, but for now, we want to pass PHPCS ;) ?>></div>
 
 					<header class="entry-header has-text-align-center">
-						<div class="entry-header-inner section-inner medium">
 
 							<?php
+
+							
 
 							/**
 							 * Allow child themes and plugins to filter the display of the categories in the article header.
@@ -77,10 +78,28 @@
 							}
 
 							$hasVideo = CFS()->get( 'video_embed_url', get_the_ID() );
+							// video options
+							$isAutoplay 	= CFS()->get( 'video_autoplay', get_the_ID() );
+							$isMuted		= 0;
+							if ($isAutoplay == 1 ) {
+								$isMuted	= 1;
+								$isAutoplay = true;
+							}
+							$isControls 	= CFS()->get( 'video_controls', get_the_ID() );
+							$isLoop 		= CFS()->get( 'video_loop', get_the_ID() );
+							$isTransparent 	= CFS()->get( 'video_transparent', get_the_ID() );
+
+							$videoClass = 'hasVideo';
+
+							if (!empty($hasVideo)) {
+								$videoClass = 'hasVideo';
+							} 
+
+							echo '<div class="entry-header-inner section-inner medium ' . $videoClass. '">';
 
 							if (!empty($hasVideo) && wp_http_validate_url($hasVideo)==true) {
 								echo '<div id="cover-video">';
-								echo wp_oembed_get( $hasVideo, array( 'controls' => true, 'muted' => 1 , 'transparent'=>true, 'loop'=> true, 'autoplay' => true, 'color' => 'ffffff', 'portrait' => 0, 'title' => 0, 'byline' => 0 ) );
+								echo wp_oembed_get( $hasVideo, array( 'controls' => $isControls, 'muted' => $isMuted , 'transparent'=> $isTransparent, 'loop'=> $isLoop, 'autoplay' => $isAutoplay, 'color' => 'ffffff', 'portrait' => 0, 'title' => 0, 'byline' => 0 ) );
 								echo '</div>';
 							}
 
@@ -122,9 +141,11 @@
 								twentytwenty_the_post_meta( get_the_ID(), 'single-top' );
 
 							}
+							echo '</div><!-- .entry-header-inner -->';
+
 							?>
 
-						</div><!-- .entry-header-inner -->
+						
 					</header><!-- .entry-header -->
 
 			</div><!-- .cover-header-inner -->
