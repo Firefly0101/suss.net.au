@@ -73,35 +73,41 @@ get_header();
 	
 	if ( have_posts() ) {
 
+		echo '<hr class="post-separator styled-separator is-style-wide section-inner" aria-hidden="true" />';
+		echo '<div class="wp-block-buttons has-text-align-center"><div id="has_tickets" class="wp-block-button is-style-outline"><a href="#" onclick="show_events(true); return false;" class="wp-block-button__link">My events</a></div><div id="all_tickets" class="wp-block-button"><a href="#" onclick="show_events(false); return false;" class="wp-block-button__link">All events</a></div></div>';
+		//echo '<hr class="post-separator styled-separator is-style-wide section-inner" aria-hidden="true" />';
+
 		$i = 0;
 
 		echo '<div class="article-wrapper">';
 
 		while ( have_posts() ) {
 			$i++;
+			$tickets = 0;
 			if ( $i > 1 ) {
 				//echo '<hr class="post-separator styled-separator is-style-wide section-inner" aria-hidden="true" />';
 			}
 			the_post();
 
-			echo '<article>';
-			get_template_part( 'template-parts/entry-header' );
-			if ( ! is_search() ) {
-				get_template_part( 'template-parts/featured-image' );
-			}
 			$relatedTicket	= CFS()->get( 'related_ticket', get_the_ID() );
 			$relatedTicket = $relatedTicket[0]; // get item ID
 
 			$current_user = wp_get_current_user();
 			$msg = custom_user_product_purchased($relatedTicket);
 			
+			echo '<article' . (($msg=="true")?' class="has_ticket"' : ' class="no_ticket"') . '>';
+			get_template_part( 'template-parts/entry-header' );
+			//if ( ! is_search() ) {
+				get_template_part( 'template-parts/featured-image' );
+			//}
 			if ($msg == 'true'){
+				$tickets ++;
 				echo '<div class="badge-purchased">&hearts; Watch</div>';
 			}
 			//get_template_part( 'template-parts/content' , get_post_type() );
 			echo '</article>';
 		}
-		echo '</div>';
+		echo '</div>'; // end article-wrapper		
 
 	} else {
 		?>
