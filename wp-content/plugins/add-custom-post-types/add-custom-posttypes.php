@@ -174,10 +174,8 @@ function show_sponsors_shortcode( $atts = []) {
 		$o .= '<h2 class="widget-title subheading heading-size-3">' . $title . '</h2>';
 		
         // start box
-        $o .= '<div class="sponsor-wrapper"><ul class="sponsor-list">';
-
-        
-    
+		$o .= '<div class="sponsor-wrapper"><ul class="sponsor-list">';
+		
         foreach ( $all_sponsors as $post ) {
             $img = CFS()->get( 'sponsor_logo', $post->ID );
             $url = CFS()->get( 'sponsor_url', $post->ID , array( 'format' => 'raw' ) );
@@ -186,7 +184,7 @@ function show_sponsors_shortcode( $atts = []) {
             $urltext = $url['text'];
             $urltarget = $url['target'];
 
-            $o .= '<li class="sponsor-item"><a href="'. $urllink .'" target="'. $urltarget .'"><img src="' . $img . '" alt="'. $post->post_title .'">' . $urltext . '</a></li>';
+            $o .= '<li class="sponsor-item"><a href="'. $urllink .'" target="'. $urltarget .'"><img src="' . $img . '" alt="'. $post->post_title .'"></a></li>';
         }
         
         // end box
