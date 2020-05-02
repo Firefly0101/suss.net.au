@@ -76,6 +76,7 @@ get_header();
 		echo '<hr class="post-separator styled-separator is-style-wide section-inner" aria-hidden="true" />';
 		echo '<div class="wp-block-buttons has-text-align-center"><div id="has_tickets" class="wp-block-button is-style-outline"><a href="#" onclick="show_events(true); return false;" class="wp-block-button__link">My events</a></div><div id="all_tickets" class="wp-block-button"><a href="#" onclick="show_events(false); return false;" class="wp-block-button__link">All events</a></div></div>';
 		//echo '<hr class="post-separator styled-separator is-style-wide section-inner" aria-hidden="true" />';
+		echo '<div id="user-message">You have no active events.</div>';
 
 		$i = 0;
 
