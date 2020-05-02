@@ -39,7 +39,8 @@ hr.post-separator { margin: 4rem auto; }
 .article-wrapper ARTICLE HEADER                 { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; margin: 0; padding: 0;z-index:10; background: rgba(0,0,0,0.4); }
 .article-wrapper ARTICLE HEADER .section-inner  { height:100%; display: flex; flex-direction: column; justify-content: flex-end; }
 .article-wrapper ARTICLE .featured-media-inner  { width:100%; }
-.article-wrapper ARTICLE HEADER .entry-title    { margin-bottom:2rem; font-size:4rem; }
+.article-wrapper ARTICLE HEADER .entry-title    { margin-bottom:2rem; font-size:4rem; height:100%; }
+.article-wrapper ARTICLE HEADER .entry-title A    { display:flex; height:100%; flex-direction: column;justify-content: center; }
 .article-wrapper ARTICLE HEADER .entry-categories    { margin-top:2rem; display:none; }
 
 .single-videostream .entry-categories           { display:none; }

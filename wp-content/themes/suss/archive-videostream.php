@@ -97,15 +97,20 @@ get_header();
 			$msg = custom_user_product_purchased($relatedTicket);
 			
 			echo '<article' . (($msg=="true")?' class="has_ticket"' : ' class="no_ticket"') . '>';
-			get_template_part( 'template-parts/entry-header' );
+			
+				get_template_part( 'template-parts/entry-header' );
+			
 			//if ( ! is_search() ) {
+				
 				get_template_part( 'template-parts/featured-image' );
+				
 			//}
 			if ($msg == 'true'){
 				$tickets ++;
 				echo '<div class="badge-purchased">&hearts; Watch</div>';
 			}
 			//get_template_part( 'template-parts/content' , get_post_type() );
+			
 			echo '</article>';
 		}
 		echo '</div>'; // end article-wrapper		
