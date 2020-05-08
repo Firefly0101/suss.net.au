@@ -118,3 +118,41 @@ function suss_set_mycomment_title( $defaults ){
  return $defaults;
 }
 add_filter('comment_form_defaults', 'suss_set_mycomment_title', 20);
+
+
+add_filter( 'tc_singular_nav_next_text' , 'suss_posts_buttons_text' );
+add_filter( 'tc_singular_nav_previous_text' , 'suss_posts_buttons_text' );
+
+function suss_posts_buttons_text() {
+  switch ( current_filter() ) {
+    case 'tc_singular_nav_previous_text':
+      return 'previous post &larr;'; // <= your custom text here
+    case 'tc_singular_nav_next_text':
+      return '&rarr; next post'; // <= your custom text here
+  }
+}
+
+/*
+* Redirect on login or register to program list
+*/
+function suss_register_redirect( $redirect ) {
+    return get_post_type_archive_link( 'videostream' );
+    //return wc_get_page_permalink( 'shop' );
+}
+ 
+add_filter( 'woocommerce_login_redirect', 'suss_register_redirect' );
+add_filter( 'woocommerce_register_redirect', 'suss_register_redirect' );
+
+
+add_filter('pre_get_posts', 'suss_query_post_type');
+function suss_query_post_type($query) {
+  if(is_category() || is_tag()) {
+    $post_type = get_query_var('post_type');
+    if($post_type)
+        $post_type = $post_type;
+    else
+        $post_type = array('post','videostream','nav_menu_item');
+    $query->set('post_type',$post_type);
+    return $query;
+    }
+}
