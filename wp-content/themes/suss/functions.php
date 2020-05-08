@@ -8,8 +8,13 @@ add_action( 'wp_enqueue_scripts', 'custom_child_enqueue_parent_styles' );
 function custom_child_enqueue_parent_styles() {
     wp_enqueue_style( 'parent-style', get_template_directory_uri().'/style.css' );
 
+    // google fonts
+    wp_enqueue_style( 'css-fonts', '//fonts.googleapis.com/css?family=Nunito+Sans:400,700,800|Open+Sans:400,700&display=swap' );
+
     wp_enqueue_style( 'css-suss', get_stylesheet_directory_uri() . '/assets/css/style.css' );
     wp_enqueue_script( 'js-suss', get_stylesheet_directory_uri() . '/assets/js/custom.js', array(), '1.0.0', true );    
+
+    
 }
 
 /** 
@@ -89,12 +94,27 @@ function dashboard_get_customer_orders() {
     $order_total = count( $customer_orders );
 
     
-    echo '<hr class="post-separator styled-separator is-style-wide section-inner" aria-hidden="true" />';
+    echo '<hr class="post-separator styled-separator is-style-wide section-inner ml-0 mr-0 w-100 aria-hidden="true" />';
     
-    // Display our notice if the customer has at least 5 orders
+    echo '<div class="has-text-align-left">';
+    echo '<h4 class="mb-1">View events</h4>';
+    //echo '<p><a href="' . get_post_type_archive_link( 'videostream' ). '">View all events</a></p>';
+
+    echo '<div class="wp-block-buttons has-text-align-left">';
     if ( $order_total >= 1 ) {
-        echo '<h3>Your Events</h3>';
-        echo '<a href="' . get_post_type_archive_link( 'videostream' ). '#myevents">View your events</a>';
-    } 
+        echo '<div id="has_tickets" class="mt-1 wp-block-button is-style-outline"><a href="' . get_post_type_archive_link( 'videostream' ). '#myevents" class="wp-block-button__link">My events</a></div>';
+    }
+    echo '<div id="all_tickets" class="mt-1 wp-block-button"><a href="' . get_post_type_archive_link( 'videostream' ) . '" class="wp-block-button__link">All events</a></div>
+    </div>';
+
+    echo '</div>';    
+        
 }
 add_action( 'woocommerce_before_my_account', 'dashboard_get_customer_orders' );
+
+
+function suss_set_mycomment_title( $defaults ){
+ $defaults['title_reply'] = __('Add a comment', 'suss-child');
+ return $defaults;
+}
+add_filter('comment_form_defaults', 'suss_set_mycomment_title', 20);
