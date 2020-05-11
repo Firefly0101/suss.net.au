@@ -12,10 +12,17 @@ function custom_child_enqueue_parent_styles() {
     wp_enqueue_style( 'css-fonts', '//fonts.googleapis.com/css?family=Nunito+Sans:400,700,800|Open+Sans:400,700&display=swap' );
 
     wp_enqueue_style( 'css-suss', get_stylesheet_directory_uri() . '/assets/css/style.css' );
-    wp_enqueue_script( 'js-suss', get_stylesheet_directory_uri() . '/assets/js/custom.js', array(), '1.0.0', true );    
-
-    
+    wp_enqueue_script( 'js-suss', get_stylesheet_directory_uri() . '/assets/js/custom.js', array(), '1.0.0', true );        
 }
+
+//* Loading editor styles for the block editor (Gutenberg)
+function site_block_editor_styles() {
+    // google fonts
+    //wp_enqueue_style( 'editor-css-fonts', '//fonts.googleapis.com/css?family=Nunito+Sans:400,700,800|Open+Sans:400,700&display=swap' );
+    // editor styles
+    //wp_enqueue_style( 'suss-editor-style', get_stylesheet_directory_uri().'/assets/css/editor-style-block.css');
+}
+//add_action( 'enqueue_block_editor_assets', 'site_block_editor_styles' );
 
 /** 
  * Add parameters for Vimeo embeds
