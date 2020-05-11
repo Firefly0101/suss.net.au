@@ -141,7 +141,7 @@ function suss_register_redirect( $redirect ) {
 }
  
 add_filter( 'woocommerce_login_redirect', 'suss_register_redirect' );
-add_filter( 'woocommerce_register_redirect', 'suss_register_redirect' );
+add_filter( 'woocommerce_registration_redirect', 'suss_register_redirect' );
 
 
 add_filter('pre_get_posts', 'suss_query_post_type');

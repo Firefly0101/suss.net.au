@@ -162,3 +162,137 @@ function custom_woocommerce_product_add_to_cart_text() {
 	}
 	
 }
+
+
+/**
+* Add new register fields for WooCommerce registration.
+*
+* @return string Register fields HTML.
+*/
+
+function suss_extra_register_fields() {	
+	
+	$first_name = '';
+	if (!empty($_POST['billing_first_name'])){
+		$first_name = esc_attr_e($_POST['billing_first_name']);
+	}
+	$last_name = '';
+	if (!empty($_POST['billing_last_name'])){
+		$last_name = esc_attr_e($_POST['billing_last_name']);
+	}
+	$phone = '';
+	if (!empty($_POST['billing_phone'])){
+		$phone = esc_attr_e($_POST['billing_phone']);
+	}
+	$address_1 = '';
+	if (!empty($_POST['billing_address_1'])){
+		$first_name = esc_attr_e($_POST['billing_address_1']);
+	}
+	$city = '';
+	if (!empty($_POST['billing_city'])){
+		$first_name = esc_attr_e($_POST['billing_city']);
+	}
+	$postcode = '';
+	if (!empty($_POST['billing_postcode'])){
+		$first_name = esc_attr_e($_POST['billing_postcode']);
+	}
+
+	?>
+	<p class="form-row form-row-first">
+		<label for="billing_first_name"><?php _e( 'First name', 'woocommerce' ); ?><span class="required">*</span></label>
+		<input type="text" class="input-text" name="billing_first_name" id="billing_first_name" value="<?php $first_name ?>" placeholder="Firstname" required />
+	</p>
+	<p class="form-row form-row-last">
+		<label for="billing_last_name"><?php _e( 'Last name', 'woocommerce' ); ?><span class="required">*</span></label>
+		<input type="text" class="input-text" name="billing_last_name" id="billing_last_name" value="<?php $last_name ?>" placeholder="Lastname" required />
+	</p>
+	<p class="form-row form-row-wide">
+		<label for="billing_phone"><?php _e( 'Mobile', 'woocommerce' ); ?><span class="required">*</span></label>
+		<input type="tel" class="input-text" name="billing_phone" id="billing_phone" value="<?php $phone ?>" placeholder="0400123123" minlength="10" maxlength="10" required pattern="[0-9]{10}"/>
+	</p>
+	<p class="form-row form-row-wide">
+		<label for="billing_address_1"><?php _e( 'Address', 'woocommerce' ); ?></label>
+		<input type="text" class="input-text" name="billing_address_1" id="billing_address_1" value="<?php $billing_address_1 ?>" />
+	</p>
+
+	<p class="form-row form-row-first">
+		<label for="billing_city"><?php _e( 'Town / City', 'woocommerce' ); ?></label>
+		<input type="text" class="input-text" name="billing_city" id="billing_city" value="<?php $city ?>" />
+	</p>
+	<p class="form-row form-row-last">
+		<label for="billing_postcode"><?php _e( 'Postcode', 'woocommerce' ); ?><span class="required">*</span></label>
+		<input type="text" class="input-text" name="billing_postcode" id="billing_postcode" value="<?php $postcode ?>" placeholder="1234" required />
+	</p>
+
+		<?php
+			// init country fields
+			wp_enqueue_script('wc-country-select');
+			woocommerce_form_field('billing_country',array(
+				'type'        => 'country',
+				'class'       => array('suss-country-drop form-row form-row-first'),
+				'label'       => __('Country'),
+				'placeholder' => __('Choose your country.'),
+				'required'    => true,
+				'clear'       => true,
+				'default'     => 'AU'
+			));
+
+			// init state fields
+			woocommerce_form_field('billing_state',array(
+				'type'        => 'state',
+				'class'       => array('suss-state-drop form-row form-row-last'),
+				'label'       => __('State'),
+				'placeholder' => __('Choose your state.'),
+				'required'    => true,
+				'default'     => '',
+			));
+		?>
+
+	<div class="clear"></div>
+	<?php
+}
+add_action( 'woocommerce_register_form_start', 'suss_extra_register_fields' );
+
+/**
+* Save the extra register fields.
+* @param string $customer_id	Current user ID.
+*/
+
+function suss_save_extra_register_fields( $customer_id ) {
+    if ( isset( $_POST['billing_phone'] ) ) {
+		// Phone input filed which is used in WooCommerce
+		update_user_meta( $customer_id, 'billing_phone', sanitize_text_field( $_POST['billing_phone'] ) );
+	}
+	if ( isset( $_POST['billing_first_name'] ) ) {
+		//First name field which is by default
+		update_user_meta( $customer_id, 'first_name', sanitize_text_field( $_POST['billing_first_name'] ) );
+		// First name field which is used in WooCommerce
+		update_user_meta( $customer_id, 'billing_first_name', sanitize_text_field( $_POST['billing_first_name'] ) );
+	}
+	if ( isset( $_POST['billing_last_name'] ) ) {
+		// Last name field which is by default
+		update_user_meta( $customer_id, 'last_name', sanitize_text_field( $_POST['billing_last_name'] ) );
+		// Last name field which is used in WooCommerce
+		update_user_meta( $customer_id, 'billing_last_name', sanitize_text_field( $_POST['billing_last_name'] ) );
+	}
+
+	// ADDRESS DETAILS
+	if ( isset( $_POST['billing_address_1'] ) ) {
+		update_user_meta( $customer_id, 'billing_address_1', sanitize_text_field( $_POST['billing_address_1'] ) );
+	}
+
+	if ( isset( $_POST['billing_city'] ) ) {
+		update_user_meta( $customer_id, 'billing_city', sanitize_text_field( $_POST['billing_city'] ) );
+	}
+	if ( isset( $_POST['billing_postcode'] ) ) {
+		update_user_meta( $customer_id, 'billing_postcode', sanitize_text_field( $_POST['billing_postcode'] ) );
+	}
+
+	if ( isset( $_POST['billing_state'] ) ) {
+		update_user_meta( $customer_id, 'billing_state', sanitize_text_field( $_POST['billing_state'] ) );
+	}
+	if ( isset( $_POST['billing_country'] ) ) {
+		update_user_meta( $customer_id, 'billing_country', sanitize_text_field( $_POST['billing_country'] ) );
+	}
+}
+add_action( 'woocommerce_created_customer', 'suss_save_extra_register_fields' );
