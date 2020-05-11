@@ -85,9 +85,13 @@
 			$current_user = wp_get_current_user();
 			$msg = custom_user_product_purchased($relatedTicket);
 			
+			$eventDate	= CFS()->get( 'event_date', get_the_ID() );
+			$eventHour	= CFS()->get( 'event_hour', get_the_ID() );
+			//$eventMin	= CFS()->get( 'event_minute', get_the_ID() );
+
 			echo '<article' . (($msg=="true")?' class="has_ticket"' : ' class="no_ticket"') . '>';
 			
-				get_template_part( 'template-parts/entry-header' );
+			get_template_part( 'template-parts/entry-header' );
 			
 			//if ( ! is_search() ) {
 				
@@ -97,6 +101,12 @@
 			if ($msg == 'true'){
 				$tickets ++;
 				echo '<div class="badge-purchased">&hearts; Watch</div>';
+			}
+			if (!empty($eventDate) && !empty($eventHour)){
+				$date = new DateTime($eventDate . ' ' . $eventHour . ':00:00');
+ 
+				//Convert it into the 12 hour time using the format method.
+				echo '<div class="event-date'. (($msg == "true")? ' has-ticket' : ' no-ticket') . '">' . $date->format('D jS M Y g:ia')  . '</div>';
 			}
 			//get_template_part( 'template-parts/content' , get_post_type() );
 			

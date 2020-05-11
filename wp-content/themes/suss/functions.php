@@ -153,13 +153,21 @@ add_filter( 'woocommerce_registration_redirect', 'suss_register_redirect' );
 
 add_filter('pre_get_posts', 'suss_query_post_type');
 function suss_query_post_type($query) {
-  if(is_category() || is_tag()) {
-    $post_type = get_query_var('post_type');
-    if($post_type)
-        $post_type = $post_type;
-    else
-        $post_type = array('post','videostream','nav_menu_item');
-    $query->set('post_type',$post_type);
-    return $query;
+    // regular post archives
+    if( ( is_category() || is_tag() ) && empty( $query->query_vars['suppress_filters'] ) ) {
+        $query->set( 'post_type', array('nav_menu_item', 'post', 'videostream') );
+        $query->set( 'orderby', 'meta_value' );
+        $query->set( 'order', 'ASC' );
+        $query->set( 'meta_key', 'event_date' );
+        return $query;   
+
     }
+    // CPT archive
+    if ( $query->is_main_query() &&  is_post_type_archive( 'videostream' ) ) {
+        $query->set( 'orderby', 'meta_value' );
+        $query->set( 'order', 'ASC' );
+        $query->set( 'meta_key', 'event_date' );   
+        return $query;
+    }
+    
 }
