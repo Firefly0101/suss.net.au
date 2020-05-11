@@ -1,5 +1,6 @@
 
-	
+// setup globals
+var $loggedin = false;
 
 // get     
 function show_events(type){
@@ -24,8 +25,19 @@ function show_events(type){
 
         jQuery('#user-message').fadeOut();
     }
-
+    checkIsLoggedIn($loggedin);
     
+}
+
+function checkIsLoggedIn(user) {
+    if (user == true){
+        jQuery('#user-message .loggedin').show();
+        jQuery('#user-message .loggedout').hide();
+        
+    } else {
+        jQuery('#user-message .loggedout').show();
+        jQuery('#user-message .loggedin').hide();
+    }
 }
 
 jQuery(function() {
@@ -35,5 +47,7 @@ jQuery(function() {
         show_events(true);
     }
 
+    $loggedin = jQuery('BODY').hasClass('logged-in');
+    console.log($loggedin);
  });
 
