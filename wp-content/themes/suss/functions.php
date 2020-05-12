@@ -190,3 +190,12 @@ add_filter( 'woocommerce_add_to_cart_redirect', 'suss_redirect_checkout_add_cart
 function suss_redirect_checkout_add_cart() {
    return wc_get_checkout_url();
 }
+
+/**
+ * Hide stepper for products where 'sold individually' is not checked
+ */
+function suss_default_no_quantities( $individually, $product ){
+    $individually = true;
+    return $individually;
+}
+add_filter( 'woocommerce_is_sold_individually', 'suss_default_no_quantities', 10, 2 );

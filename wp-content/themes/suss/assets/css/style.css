@@ -48,6 +48,9 @@ hr.post-separator { margin: 2rem auto; }
 
 .page-template-default #site-content .post-inner            { padding-top:0;}
 
+/* POSTS */
+.single #site-content .entry-content 						{ margin-top: 4rem; }
+
 /*****************
 * VIDEOSTREAM ARCHIVE
 ******************/
@@ -130,6 +133,9 @@ ul.products li.product .woocommerce-loop-product__title     { color:inherit;}
 .page-myaccount #customer_login .col-1,
 .page-createaccount #customer_login .col-2 { width:100%; }
 
+/* ERRORS */
+UL.woocommerce-error li 									{ width: 100%; font-size: 2rem; line-height: 5rem; }
+
 /******************
 * RESPONSIVE
 *******************/
@@ -141,7 +147,7 @@ ul.products li.product .woocommerce-loop-product__title     { color:inherit;}
 
 @media ( max-width: 1024px ) {
 	.single-videostream #cover-video,
-	.cover-header .section-inner {  width:calc(100vw - 4rem);max-width:calc(100vw - 4rem); height:auto;}
+	.cover-header .section-inner 	{ width:calc(100vw - 4rem);max-width:calc(100vw - 4rem); height:auto;}
 	.cover-header-inner-wrapper.screen-height,
 	.cover-header .section-inner.has-video { min-height:calc(100vh - 16rem);}
 
@@ -149,7 +155,7 @@ ul.products li.product .woocommerce-loop-product__title     { color:inherit;}
     .article-wrapper ARTICLE        { flex-basis: calc(50% - 4rem); }
 	.article-wrapper ARTICLE HEADER .entry-title    { font-size:3rem; }
 	
-    .footer-widgets-wrapper { margin-left:0; width:100%; }
+	.footer-widgets-wrapper 		{ margin-left:0; width:100%; }
 }
 
 @media ( max-width: 768px ) {
@@ -162,12 +168,17 @@ ul.products li.product .woocommerce-loop-product__title     { color:inherit;}
 	.article-wrapper ARTICLE HEADER .section-inner      { justify-content: end; }
 
 	.sponsor-wrapper UL LI { flex: 0 0 25%; }
+
+	.UL.woocommerce-error LI A.button { margin-left:0.5rem; }
 }
 
 @media ( max-width: 480px ) {
 
     .article-wrapper ARTICLE		{ flex-basis: 100%;}
-    .sponsor-wrapper UL LI          { flex-basis: 50%;}
+	.sponsor-wrapper UL LI          { flex-basis: 50%;}
+	
+	UL.woocommerce-error			{ padding: 1.25rem 1.5rem 1rem; }
+	UL.woocommerce-error li 		{ font-size: 1.5rem; line-height: 2.25rem; margin:0; }
 }
 
 
