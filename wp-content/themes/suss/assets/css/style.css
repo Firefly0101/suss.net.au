@@ -5,7 +5,8 @@ h1,h2,h3,h4,h5,h6,
 .entry-content h5, .entry-content h6, 
 .entry-content cite, .entry-content figcaption, 
 .entry-content table, .entry-content address, .archive-title,
-.entry-content .wp-caption-text, .entry-content .wp-block-file 	{ font-family: 'Nunito Sans', sans-serif; font-weight:800; }
+.entry-content .wp-caption-text, .entry-content .wp-block-file,
+.entry-content 	{ font-family: 'Nunito Sans', sans-serif; font-weight:800; }
 P,TR,TD 														{ font-family: 'Open Sans', sans-serif; font-weight:400; }
 p.has-large-font-size {font-weight:700;}
 
@@ -59,14 +60,23 @@ hr.post-separator { margin: 2rem auto; }
 	background: rgba(0,0,0,0.4) !important; }
 .article-wrapper ARTICLE HEADER .section-inner  { height:100%; display: flex; flex-direction: column-reverse; justify-content: space-between; }
 .article-wrapper ARTICLE .featured-media-inner  { width:100%; }
-.article-wrapper ARTICLE HEADER .entry-title    { margin-top:2rem; font-size:4rem; height:100%; }
+.article-wrapper ARTICLE HEADER .entry-title    { margin-top:4rem; font-size:4rem; height:100%; }
 .article-wrapper ARTICLE HEADER .entry-title A    { display:flex; height:100%; flex-direction: column;justify-content: center; color:#fff; }
 .article-wrapper ARTICLE HEADER .entry-categories    { margin:1rem 0; }
 .article-wrapper ARTICLE HEADER .entry-categories A   { color: #999;background: rgba(50,50,50,0.7);padding: 0.5rem 1rem; text-decoration: none; border: none;border-radius: 1rem; font-size: 1.25rem; }
 .article-wrapper ARTICLE HEADER .entry-categories A:hover { background: #000;}
 
 .single-videostream .entry-categories           { display:none; }
-.article-wrapper ARTICLE .badge-purchased       { position: absolute; top: 1.5rem; left: 0; width: 100%;z-index:10; text-align: center; color:#fff;  }
+
+.article-wrapper ARTICLE .badge-buy,
+.article-wrapper ARTICLE .badge-purchased,
+.article-wrapper ARTICLE .event-date			{ color:rgba(255,255,255,0.7); font-size:1.65rem; background: rgba(50,50,50,0.7); padding: 0.5rem 1rem; border-radius: 1rem; }
+.article-wrapper ARTICLE .badge-buy,
+.article-wrapper ARTICLE .badge-purchased       { position: absolute; top: 1rem; left: 1rem; width: auto;z-index:10; text-align: center;  }
+.article-wrapper ARTICLE .event-date 			{ position: absolute; z-index: 10;top: 1rem; right:1rem; width: auto; text-align: center;}
+/*.article-wrapper ARTICLE .event-date.no-ticket	{ left: 1rem; }*/
+.article-wrapper ARTICLE .badge-buy				{ background-color: #0678b1; }
+.article-wrapper ARTICLE .badge-buy a			{ color:#fff;  text-decoration: none;;}
 
 #user-message 								{ display:none; margin: 2rem auto; width: auto; text-align: center; }
 
@@ -156,7 +166,7 @@ ul.products li.product .woocommerce-loop-product__title     { color:inherit;}
 
 @media ( max-width: 480px ) {
 
-    .article-wrapper ARTICLE,
+    .article-wrapper ARTICLE		{ flex-basis: 100%;}
     .sponsor-wrapper UL LI          { flex-basis: 50%;}
 }
 

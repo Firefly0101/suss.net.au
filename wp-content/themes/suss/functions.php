@@ -12,10 +12,17 @@ function custom_child_enqueue_parent_styles() {
     wp_enqueue_style( 'css-fonts', '//fonts.googleapis.com/css?family=Nunito+Sans:400,700,800|Open+Sans:400,700&display=swap' );
 
     wp_enqueue_style( 'css-suss', get_stylesheet_directory_uri() . '/assets/css/style.css' );
-    wp_enqueue_script( 'js-suss', get_stylesheet_directory_uri() . '/assets/js/custom.js', array(), '1.0.0', true );    
-
-    
+    wp_enqueue_script( 'js-suss', get_stylesheet_directory_uri() . '/assets/js/custom.js', array(), '1.0.0', true );        
 }
+
+//* Loading editor styles for the block editor (Gutenberg)
+function site_block_editor_styles() {
+    // google fonts
+    //wp_enqueue_style( 'editor-css-fonts', '//fonts.googleapis.com/css?family=Nunito+Sans:400,700,800|Open+Sans:400,700&display=swap' );
+    // editor styles
+    //wp_enqueue_style( 'suss-editor-style', get_stylesheet_directory_uri().'/assets/css/editor-style-block.css');
+}
+//add_action( 'enqueue_block_editor_assets', 'site_block_editor_styles' );
 
 /** 
  * Add parameters for Vimeo embeds
@@ -146,13 +153,40 @@ add_filter( 'woocommerce_registration_redirect', 'suss_register_redirect' );
 
 add_filter('pre_get_posts', 'suss_query_post_type');
 function suss_query_post_type($query) {
-  if(is_category() || is_tag()) {
-    $post_type = get_query_var('post_type');
-    if($post_type)
-        $post_type = $post_type;
-    else
-        $post_type = array('post','videostream','nav_menu_item');
-    $query->set('post_type',$post_type);
-    return $query;
+    // regular post archives
+    if( ( is_category() || is_tag() ) && empty( $query->query_vars['suppress_filters'] ) ) {
+        $query->set( 'post_type', array('nav_menu_item', 'post', 'videostream') );
+        $query->set( 'orderby', 'meta_value' );
+        $query->set( 'order', 'ASC' );
+        $query->set( 'meta_key', 'event_date' );
+        return $query;   
+
     }
+    // CPT archive
+    if ( $query->is_main_query() &&  is_post_type_archive( 'videostream' ) ) {
+        $query->set( 'orderby', 'meta_value' );
+        $query->set( 'order', 'ASC' );
+        $query->set( 'meta_key', 'event_date' );   
+        return $query;
+    }
+    
+}
+
+add_action( 'template_redirect', 'suss_custom_redirect_after_purchase' );
+function suss_custom_redirect_after_purchase() {
+	global $wp;
+	if ( is_checkout() && !empty( $wp->query_vars['order-received'] ) ) {
+		wp_redirect( get_post_type_archive_link( 'videostream' ) );
+		exit;
+	}
+}
+
+/**
+ * Redirect to checkout page on add to cart
+ * Needs both options for 'add to cart' disabled /wp-admin/admin.php?page=wc-settings&tab=products
+ */
+add_filter( 'woocommerce_add_to_cart_redirect', 'suss_redirect_checkout_add_cart' );
+
+function suss_redirect_checkout_add_cart() {
+   return wc_get_checkout_url();
 }
