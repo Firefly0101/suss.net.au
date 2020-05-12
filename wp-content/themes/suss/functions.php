@@ -180,3 +180,13 @@ function suss_custom_redirect_after_purchase() {
 		exit;
 	}
 }
+
+/**
+ * Redirect to checkout page on add to cart
+ * Needs both options for 'add to cart' disabled /wp-admin/admin.php?page=wc-settings&tab=products
+ */
+add_filter( 'woocommerce_add_to_cart_redirect', 'suss_redirect_checkout_add_cart' );
+
+function suss_redirect_checkout_add_cart() {
+   return wc_get_checkout_url();
+}
