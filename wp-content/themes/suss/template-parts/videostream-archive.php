@@ -88,7 +88,11 @@
 			
 			$eventDate	= CFS()->get( 'event_date', get_the_ID() );
 			$eventHour	= CFS()->get( 'event_hour', get_the_ID() );
-			//$eventMin	= CFS()->get( 'event_minute', get_the_ID() );
+			$eventMin	= CFS()->get( 'event_minutes', get_the_ID() );
+
+			if (empty($eventMin) || $eventMin == 0) {
+				$eventMin = '00';
+			}
 
 			echo '<article' . (($msg=="true")?' class="has_ticket"' : ' class="no_ticket"') . '>';
 			
@@ -107,7 +111,7 @@
 				echo '<div class="badge-buy"><a href="'. $productURL .'">&hearts; Get ticket</a></div>';
 			}
 			if (!empty($eventDate) && !empty($eventHour)){
-				$date = new DateTime($eventDate . ' ' . $eventHour . ':00:00');
+				$date = new DateTime($eventDate . ' ' . $eventHour . ':' . $eventMin .':00');
  
 				//Convert it into the 12 hour time using the format method.
 				echo '<div class="event-date'. (($msg == "true")? ' has-ticket' : ' no-ticket') . '">' . $date->format('D jS M Y g:ia')  . '</div>';
