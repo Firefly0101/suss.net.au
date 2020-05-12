@@ -81,6 +81,7 @@
 
 			$relatedTicket	= CFS()->get( 'related_ticket', get_the_ID() );
 			$relatedTicket = $relatedTicket[0]; // get item ID
+			$productURL = get_permalink( $relatedTicket );
 
 			$current_user = wp_get_current_user();
 			$msg = custom_user_product_purchased($relatedTicket);
@@ -91,7 +92,8 @@
 
 			echo '<article' . (($msg=="true")?' class="has_ticket"' : ' class="no_ticket"') . '>';
 			
-			get_template_part( 'template-parts/entry-header' );
+			include( locate_template( 'template-parts/entry-header.php', false, false ) ); 
+			//get_template_part( 'template-parts/entry-header' );
 			
 			//if ( ! is_search() ) {
 				
@@ -101,6 +103,8 @@
 			if ($msg == 'true'){
 				$tickets ++;
 				echo '<div class="badge-purchased">&hearts; Watch</div>';
+			} else {
+				echo '<div class="badge-buy"><a href="'. $productURL .'">&hearts; Get ticket</a></div>';
 			}
 			if (!empty($eventDate) && !empty($eventHour)){
 				$date = new DateTime($eventDate . ' ' . $eventHour . ':00:00');
