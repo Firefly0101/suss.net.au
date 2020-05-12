@@ -171,3 +171,12 @@ function suss_query_post_type($query) {
     }
     
 }
+
+add_action( 'template_redirect', 'suss_custom_redirect_after_purchase' );
+function suss_custom_redirect_after_purchase() {
+	global $wp;
+	if ( is_checkout() && !empty( $wp->query_vars['order-received'] ) ) {
+		wp_redirect( get_post_type_archive_link( 'videostream' ) );
+		exit;
+	}
+}
