@@ -64,9 +64,9 @@
 		echo '<hr class="post-separator styled-separator is-style-wide section-inner" aria-hidden="true" />';
 		echo '<div class="wp-block-buttons has-text-align-center"><div id="has_tickets" class="wp-block-button is-style-outline"><a href="#" onclick="show_events(true); return false;" class="wp-block-button__link">My events</a></div><div id="all_tickets" class="wp-block-button"><a href="#" onclick="show_events(false); return false;" class="wp-block-button__link">All events</a></div></div>';
 		//echo '<hr class="post-separator styled-separator is-style-wide section-inner" aria-hidden="true" />';
-		echo '<div class="wp-block-buttons has-text-align-center mt-2 mb-2 link-create-account"><p>If you are already a subscriber, please <a href="'. wp_login_url( get_post_type_archive_link( 'videostream' ) ) .'">login</a> to check if you have any event tickets.</p></div>';
+		echo '<div class="wp-block-buttons has-text-align-center mt-2 mb-2 link-create-account"><p>If you are already a subscriber, please <a href="'. wp_login_url( get_post_type_archive_link( 'videostream' ) ) .'">login</a> to view your event tickets.</p></div>';
 
-		echo '<div id="user-message"><p class="loggedin">You have no active events.</p> <p class="loggedout">Please <a href="' . get_permalink( get_option('woocommerce_myaccount_page_id') ) . '">login</a> to see if you have any active events.</p></div>';
+		echo '<div id="user-message"><p class="loggedin">You have no active events.</p> <p class="loggedout">Please <a href="' . get_permalink( get_option('woocommerce_myaccount_page_id') ) . '">login</a> to view your events.</p></div>';
 
 		$i = 0;
 
