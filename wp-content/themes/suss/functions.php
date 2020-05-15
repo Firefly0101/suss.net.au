@@ -143,8 +143,9 @@ function suss_posts_buttons_text() {
 * Redirect on login or register to program list
 */
 function suss_register_redirect( $redirect ) {
-    return get_post_type_archive_link( 'videostream' );
-    //return wc_get_page_permalink( 'shop' );
+    if ( !is_checkout() ) {
+        return wc_get_page_permalink( 'videostream' );
+    }
 }
  
 add_filter( 'woocommerce_login_redirect', 'suss_register_redirect' );
@@ -176,7 +177,9 @@ add_action( 'template_redirect', 'suss_custom_redirect_after_purchase' );
 function suss_custom_redirect_after_purchase() {
 	global $wp;
 	if ( is_checkout() && !empty( $wp->query_vars['order-received'] ) ) {
-		wp_redirect( get_post_type_archive_link( 'videostream' ) );
+        $redirect = get_post_type_archive_link( 'videostream' );
+        $redirect .= "#myevents";
+		wp_redirect( get_post_type_archive_link( $redirect ) );
 		exit;
 	}
 }
