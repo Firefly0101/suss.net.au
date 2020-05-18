@@ -105,6 +105,8 @@
 				get_template_part( 'template-parts/featured-image' );
 				
 			//}
+			echo '<div class="badge-wrapper">';
+
 			if ($msg == 'true'){
 				$tickets ++;
 				echo '<div class="badge-purchased">&hearts; Watch</div>';
@@ -117,6 +119,9 @@
 				//Convert it into the 12 hour time using the format method.
 				echo '<div class="event-date'. (($msg == "true")? ' has-ticket' : ' no-ticket') . '">' . $date->format('D jS M Y g:ia')  . '</div>';
 			}
+
+			echo '</div>';
+
 			//get_template_part( 'template-parts/content' , get_post_type() );
 			
 			echo '</article>';
