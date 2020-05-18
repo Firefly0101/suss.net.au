@@ -57,10 +57,7 @@
 					<header class="entry-header has-text-align-center">
 					<div class="post-inner <?php echo is_page_template( 'templates/template-full-width.php' ) ? '' : 'thin'; ?> ">
 
-						<?php 
-							the_title( '<h1 class="entry-title">', '</h1>' );
-						?>
-
+						
 						<div class="entry-content">
 
 							<?php
@@ -108,7 +105,7 @@
 											break;
 										
 										default:
-											echo 'oops';
+											echo 'Oops, something has gone wrong.';
 											
 									}
 								}
@@ -118,6 +115,10 @@
 							?>
 
 						</div><!-- .entry-content -->
+
+						<?php 
+							the_title( '<h1 class="entry-title">', '</h1>' );
+						?>
 
 					</div><!-- .post-inner -->
 					</header><!-- .entry-header -->
