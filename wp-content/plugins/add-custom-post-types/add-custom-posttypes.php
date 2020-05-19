@@ -158,7 +158,8 @@ function show_sponsors_shortcode( $atts = []) {
     $args = array(
         'post_type'      => 'sponsors',
         'post_status'    => 'publish',
-        'orderby'        => 'rand',
+		'orderby'        => 'rand',
+		'numberposts'	 => -1,
         'meta_query' => array(
             array(
                 'key'   => 'sponsor_type',
