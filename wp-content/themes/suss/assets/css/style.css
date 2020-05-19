@@ -11,6 +11,7 @@ P,TR,TD 														{ font-family: 'Open Sans', sans-serif; font-weight:400; }
 p.has-large-font-size {font-weight:700;}
 
 /* GENERAL */
+.powered-by-wordpress { display:none; }
 
 button:not(.toggle), .button, .faux-button, .wp-block-button__link, 
 .wp-block-file .wp-block-file__button, 
