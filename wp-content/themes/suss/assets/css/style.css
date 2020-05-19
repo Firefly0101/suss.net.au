@@ -164,11 +164,13 @@ UL.woocommerce-error li 									{ width: 100%; font-size: 2rem; line-height: 5r
 
 
 /* JETPACK */
-div.sharedaddy h3.sd-title::before 				{ display:none; }
+div.sharedaddy h3.sd-title::before 							{ display:none !important; }
 .entry-content div.sharedaddy h3.sd-title, 
-.entry-content h3.sd-title  					{ font-size: 3rem; margin-bottom: 2rem;  }
+.entry-content h3.sd-title  								{ font-size: 3rem !important; margin-bottom: 2rem;  }
+.single-videostream .entry-content .sharedaddy .sd-title 	{ color: #FFF !important; margin-right: 1rem; }
+.single-videostream .entry-content .sharedaddy .sd-content 	{ margin-top:0.25rem; }
 
-.sharedaddy .sd-sharing 						{ display: flex; justify-content: space-between; }
+.sharedaddy .sd-sharing 									{ display: flex; justify-content: center; }
 
 /******************
 * RESPONSIVE
