@@ -110,6 +110,8 @@
 									}
 								}
 								
+								the_title( '<h1 class="entry-title">', '</h1>' );
+								
 								the_content( __( 'Continue reading', 'twentytwenty' ) );
 								
 							?>
@@ -117,7 +119,7 @@
 						</div><!-- .entry-content -->
 
 						<?php 
-							the_title( '<h1 class="entry-title">', '</h1>' );
+							
 						?>
 
 					</div><!-- .post-inner -->

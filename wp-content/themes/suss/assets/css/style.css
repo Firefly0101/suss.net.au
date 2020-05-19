@@ -62,6 +62,7 @@ hr.post-separator { margin: 2rem auto; }
 /*****************
 * VIDEOSTREAM ARCHIVE
 ******************/
+.single-videostream .entry-content h1										{ margin-top: 2rem; }
 .single-videostream #site-content .entry-header 				{ background-color: transparent; }
 .single-videostream #site-content .cover-header-inner 			{ padding:0; }
 .single-videostream #site-content .cover-header-inner-wrapper 	{ justify-content: flex-start;}
@@ -101,10 +102,10 @@ height: 100%;}
 
 .wp-block-button.reversed A.wp-block-button__link { background: #fff; }
 .wp-block-button.reversed.is-style-outline A.wp-block-button__link { border-color: #fff; color: #fff; background: transparent; }
-/**
-* MENU
-*/
 
+/**********
+* MENU
+***********/
 .menu-modal.active .menu-modal-inner { background: #1b7eb0; }
 .menu-modal.active A { color: #FFF; }
 
@@ -160,6 +161,14 @@ ul.products li.product .woocommerce-loop-product__title     { color:inherit;}
 
 /* ERRORS */
 UL.woocommerce-error li 									{ width: 100%; font-size: 2rem; line-height: 5rem; }
+
+
+/* JETPACK */
+div.sharedaddy h3.sd-title::before 				{ display:none; }
+.entry-content div.sharedaddy h3.sd-title, 
+.entry-content h3.sd-title  					{ font-size: 3rem; margin-bottom: 2rem;  }
+
+.sharedaddy .sd-sharing 						{ display: flex; justify-content: space-between; }
 
 /******************
 * RESPONSIVE
