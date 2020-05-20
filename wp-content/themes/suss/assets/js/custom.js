@@ -40,6 +40,12 @@ function checkIsLoggedIn(user) {
     }
 }
 
+function toggleChat() {
+    jQuery('.chat-wrapper').toggle();
+    jQuery('.chat-show').toggle();
+    jQuery('.chat-hide').toggle();
+}
+
 jQuery(function() {
     var hash = window.location.hash;
     if (hash.length > 0 && hash == '#myevents') {
@@ -48,6 +54,9 @@ jQuery(function() {
     }
 
     $loggedin = jQuery('BODY').hasClass('logged-in');
-    console.log($loggedin);
+    //console.log($loggedin);
+    jQuery('.chat-show').toggle();
+
+    
  });
 

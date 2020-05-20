@@ -47,10 +47,38 @@
 		$color_overlay_opacity  = get_theme_mod( 'cover_template_overlay_opacity' );
 		$color_overlay_opacity  = ( false === $color_overlay_opacity ) ? 80 : $color_overlay_opacity;
 		$color_overlay_classes .= ' opacity-' . $color_overlay_opacity;
+		
+		// INIT Video and User
+		$relatedTicket	= CFS()->get( 'related_ticket', get_the_ID() );
+		$relatedTicket = $relatedTicket[0]; // get item ID
+		
+		$hasVideo = CFS()->get( 'video_stream_url', get_the_ID() );
+		$hasLiveChat = CFS()->get( 'vimeo_chat_embed', get_the_ID() );
+
+		// video options
+		$isAutoplay 	= false;
+		$isMuted		= 0;
+		$isControls 	= 1;
+		$isLoop 		= 0;
+		$isTransparent 	= 1; 
+
+		$productURL = get_permalink( $relatedTicket );
+		$msg = 'no-session';
+
+		if ( is_user_logged_in() ) {
+			$msg = custom_user_product_purchased($relatedTicket);
+			$current_user = wp_get_current_user();
+		} 
+
+		$videoClass = '';
+
+		if (!empty($hasVideo && $msg == 'true') ) {
+			$videoClass = 'hasVideo';
+		} 
 	?>
 
 	<div class="cover-header <?php echo $cover_header_classes; ?>"<?php echo $cover_header_style;  ?>>
-		<div class="cover-header-inner-wrapper screen-height">
+		<div class="cover-header-inner-wrapper screen-height <?php echo $videoClass; ?>">
 			<div class="cover-header-inner">
 				<div class="cover-color-overlay color-accent<?php echo esc_attr( $color_overlay_classes ); ?>"<?php echo $color_overlay_style; ?>></div>
 
@@ -62,26 +90,7 @@
 
 							<?php
 
-								$relatedTicket	= CFS()->get( 'related_ticket', get_the_ID() );
-								$relatedTicket = $relatedTicket[0]; // get item ID
 								
-								$hasVideo = CFS()->get( 'video_stream_url', get_the_ID() );
-
-								// video options
-								$isAutoplay 	= false;
-								$isMuted		= 0;
-								$isControls 	= 1;
-								$isLoop 		= 0;
-								$isTransparent 	= 1; 
-
-								$productURL = get_permalink( $relatedTicket );
-								$msg = 'no-session';
-
-								if ( is_user_logged_in() ) {
-									$msg = custom_user_product_purchased($relatedTicket);
-									$current_user = wp_get_current_user();
-								} 
-
 								if (!empty($hasVideo) && wp_http_validate_url($hasVideo)==true) {
 									switch($msg){
 										case 'true':
@@ -89,6 +98,7 @@
 											// start video wrapper
 											echo '<div id="cover-video">';
 											echo wp_oembed_get( $hasVideo, array( 'controls' => $isControls, 'muted' => $isMuted , 'transparent'=> $isTransparent, 'loop'=> $isLoop, 'autoplay' => $isAutoplay, 'color' => 'ffffff', 'portrait' => 0, 'title' => 0, 'byline' => 0 ) );
+											
 											// end video wrapper
 											echo '</div>';
 											break;
@@ -110,7 +120,7 @@
 									}
 								}
 								
-								the_title( '<h1 class="entry-title">', '</h1>' );
+								//the_title( '<h1 class="entry-title">', '</h1>' );
 								
 								the_content( __( 'Continue reading', 'twentytwenty' ) );
 								
@@ -131,14 +141,15 @@
 
 	<div class="section-inner">
 		<?php
-		wp_link_pages(
-			array(
-				'before'      => '<nav class="post-nav-links bg-light-background" aria-label="' . esc_attr__( 'Page', 'twentytwenty' ) . '"><span class="label">' . __( 'Pages:', 'twentytwenty' ) . '</span>',
-				'after'       => '</nav>',
-				'link_before' => '<span class="page-number">',
-				'link_after'  => '</span>',
-			)
-		);
+
+		if (!empty($hasLiveChat) && $msg == 'true') {
+			echo '<h3 class="has-text-align-center">Live chat</h3>';
+			echo '<p class="has-text-align-center"><a onclick="toggleChat(); return false;" class="chat-show" href="#">Open chat</a> <a onclick="toggleChat(); return false;" class="chat-hide" href="#">Close chat</a></p>';
+			echo '<div class="chat-wrapper">';
+			
+			echo $hasLiveChat;
+			echo '</div>';
+		}
 
 		if (is_single()) {
 			edit_post_link();
@@ -160,7 +171,7 @@
 
 	if ( is_single() ) {
 
-		get_template_part( 'template-parts/navigation' );
+		//get_template_part( 'template-parts/navigation' );
 
 	}
 
