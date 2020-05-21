@@ -59,8 +59,12 @@ jQuery(function() {
     jQuery('.chat-show').toggle();
 
     jQuery("form.woocommerce-checkout").on('submit', function() { 
-        console.log('show overlay');
-        jQuery('#overlay-order').css('visibility','visible');
+        if ( $loggedin == false) {
+            jQuery('#overlay-order').css('visibility','hidden');
+        } else {
+            console.log('show overlay');
+            jQuery('#overlay-order').css('visibility','visible');
+        }
     } ); 
 
     /*
