@@ -173,15 +173,15 @@ function suss_query_post_type($query) {
     
 }
 
-add_action( 'template_redirect', 'suss_custom_redirect_after_purchase' );
-function suss_custom_redirect_after_purchase() {
-	global $wp;
-	if ( is_checkout() && !empty( $wp->query_vars['order-received'] ) ) {
-        $redirect = get_post_type_archive_link( 'videostream' );
-        $redirect .= "#myevents";
-		wp_redirect( get_post_type_archive_link( $redirect ) );
-		exit;
-	}
+add_action( 'woocommerce_thankyou', 'suss_custom_redirect_after_purchase' );
+
+function suss_custom_redirect_after_purchase( $order_id ){
+    $order = wc_get_order( $order_id );
+    $url = get_post_type_archive_link( 'videostream' );
+    if ( ! $order->has_status( 'failed' ) ) {
+        wp_safe_redirect( $url . "#myevents");
+        exit;
+    }
 }
 
 /**
