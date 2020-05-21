@@ -186,7 +186,7 @@ function suss_custom_redirect_after_purchase( $order_id ){
 
 // define the woocommerce_review_order_after_submit callback 
 function suss_woocommerce_review_order_after_submit() { 
-    echo '<div id="overlay-order" class="hide"><div class="overlay-inner">Please wait while your order is processed.</div></div>';
+    echo '<div id="overlay-order" class="hide"><div class="overlay-inner"><img width="16" height="16" src="' . get_stylesheet_directory_uri() . '/assets/images/ajax-loader.gif'. '">Please wait while your order is processed.</div></div>';
 }; 
             
 // add the action 

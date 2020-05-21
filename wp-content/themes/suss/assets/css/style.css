@@ -160,6 +160,8 @@ ul.products li.product .woocommerce-loop-product__title     { color:inherit;}
 .cart_totals .shop_table 									{ margin-top:0; }
 #overlay-order												{ position: fixed; left: 0; top: 0; background: rgba(255,255,255,0.9);z-index: 1000;min-width: 100vw;min-height: 100vh; height:100%; width:100%; display: flex;justify-content: center;align-content: center;flex-direction: column; }
 #overlay-order .overlay-inner 								{ padding: 3rem; width: auto; margin: 0 auto; }
+#overlay-order .overlay-inner IMG 							{display: inline-block; margin-right: 10px;}
+
 .hide { visibility: hidden; }
 .show { visibility: visible; }
 
