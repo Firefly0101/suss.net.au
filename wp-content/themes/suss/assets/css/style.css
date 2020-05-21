@@ -158,6 +158,10 @@ ul.products li.product .woocommerce-loop-product__title     { color:inherit;}
 .woocommerce-page .cart-collaterals .cart_totals H2			{ margin-top:2rem; display: none; }
 .woocommerce-message 										{ background: #fff; border: 1px solid #ccc; }
 .cart_totals .shop_table 									{ margin-top:0; }
+#overlay-order												{ position: fixed; left: 0; top: 0; background: rgba(255,255,255,0.9);z-index: 1000;min-width: 100vw;min-height: 100vh; height:100%; width:100%; display: flex;justify-content: center;align-content: center;flex-direction: column; }
+#overlay-order .overlay-inner 								{ padding: 3rem; width: auto; margin: 0 auto; }
+.hide { visibility: hidden; }
+.show { visibility: visible; }
 
 /* LOGIN */
 .page-myaccount #customer_login .col-2 { display:none; }
@@ -180,7 +184,6 @@ UL.woocommerce-error li 									{ width: 100%; font-size: 2rem; line-height: 5r
 .entry-content .sharedaddy .sd-content 						{ margin-top:0.25rem; }
 
 .single-videostream .entry-content .sharedaddy .sd-title 	{ color: #FFF !important; }
-
 
 /******************
 * RESPONSIVE

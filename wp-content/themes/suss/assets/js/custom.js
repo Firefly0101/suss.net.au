@@ -1,6 +1,7 @@
 
 // setup globals
 var $loggedin = false;
+var $hasclick = '';
 
 // get     
 function show_events(type){
@@ -57,6 +58,20 @@ jQuery(function() {
     //console.log($loggedin);
     jQuery('.chat-show').toggle();
 
-    
+    jQuery("form.woocommerce-checkout").on('submit', function() { 
+        console.log('show overlay');
+        jQuery('#overlay-order').css('visibility','visible');
+    } ); 
+
+    /*
+    $hasclick = jQuery("[id=place_order]");
+    console.log($hasclick);
+
+    jQuery( "[id=place_order]" ).click(function() {
+        jQuery('#overlay-order').css('visibility','visible');
+        console.log('show overlay');
+    });
+    */
+
  });
 

@@ -184,6 +184,14 @@ function suss_custom_redirect_after_purchase( $order_id ){
     }
 }
 
+// define the woocommerce_review_order_after_submit callback 
+function suss_woocommerce_review_order_after_submit() { 
+    echo '<div id="overlay-order" class="hide"><div class="overlay-inner">Please wait while your order is processed.</div></div>';
+}; 
+            
+// add the action 
+add_action( 'woocommerce_review_order_after_submit', 'suss_woocommerce_review_order_after_submit', 10, 0 ); 
+
 /**
  * Redirect to checkout page on add to cart
  * Needs both options for 'add to cart' disabled /wp-admin/admin.php?page=wc-settings&tab=products
