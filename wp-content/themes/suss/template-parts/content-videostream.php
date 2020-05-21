@@ -143,8 +143,8 @@
 		<?php
 
 		if (!empty($hasLiveChat) && $msg == 'true') {
-			echo '<h3 class="has-text-align-center">Live chat</h3>';
-			echo '<p class="has-text-align-center"><a onclick="toggleChat(); return false;" class="chat-show" href="#">Open chat</a> <a onclick="toggleChat(); return false;" class="chat-hide" href="#">Close chat</a></p>';
+			echo '<h3 class="chat-heading has-text-align-center"><span>Live chat</span> <span> <a onclick="toggleChat(); return false;" class="chat-show" href="#">open &Downarrow;</a> <a onclick="toggleChat(); return false;" class="chat-hide" href="#">close &Uparrow;</a></span></h3>';
+			echo '';
 			echo '<div class="chat-wrapper">';
 			
 			echo $hasLiveChat;

@@ -107,7 +107,10 @@ height: 100%;}
 .wp-block-button.reversed A.wp-block-button__link { background: #fff; }
 .wp-block-button.reversed.is-style-outline A.wp-block-button__link { border-color: #fff; color: #fff; background: transparent; }
 
-.chat-wrapper 									{  border: 2px solid #eee; padding:1rem; margin: 0 auto; max-width: 800px;}
+.chat-wrapper 									{ border: 2px solid #eee; padding:1rem; margin: 0 auto; max-width: 800px;}
+.chat-heading									{ display:flex; justify-content: center; align-items:center; }
+.chat-heading SPAN								{ margin-left:1rem; display:inline-flex; }
+.chat-heading SPAN a							{ font-size: 16px; font-weight: normal; letter-spacing: 0; padding: 0.25rem 1rem; background: rgba(59, 153, 252, .75); color:#fff; margin: 0.5rem 0 0 1rem; border-radius: 1rem; text-decoration: none;}
 
 /**********
 * MENU
