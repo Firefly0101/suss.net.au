@@ -1,5 +1,46 @@
 <?php
 
+/*
+carbon fields setup
+*/
+
+/*
+use Carbon_Fields\Container;
+use Carbon_Fields\Field;
+
+add_action( 'carbon_fields_register_fields', 'suss_add_custom_fields' );
+function suss_add_custom_fields() {
+    
+    Container::make( 'post_meta', __( 'Video Options' ) )
+    ->where( 'post_type', '=', 'videostream' )
+    ->add_fields( array(
+        Field::make( 'text', '_video_stream_url', 'Video Stream URL' )
+        ->set_required( true ),
+        Field::make( 'text', '_vimeo_chat_embed', 'Video Chat embed' ),
+        Field::make( 'radio', '_archived_video', __( 'Is this video archived?' ) )
+        ->set_width(50)
+        ->set_options( array(
+            0 => 'No',
+            1 => 'Yes',
+        ) ),
+        Field::make( 'date_time', '_event_date', 'Event Date' )
+            ->set_attribute( 'placeholder', 'Date and time of event start' )
+            ->set_width(50)
+            ->set_required( true ),
+        Field::make( 'association', '_related_ticket' )
+            ->set_types( array(
+                array(
+                    'type' => 'post',
+                    'post_type' => 'product',
+                ),
+            ) )
+            ->set_max( 1 )
+            ->set_required( true )
+    ) );
+
+}
+*/
+
 /**
  * Enqueue styles
  */
@@ -152,26 +193,63 @@ add_filter( 'woocommerce_login_redirect', 'suss_register_redirect' );
 add_filter( 'woocommerce_registration_redirect', 'suss_register_redirect' );
 
 
-add_filter('pre_get_posts', 'suss_query_post_type');
+//add_filter('pre_get_posts', 'suss_query_post_type');
 function suss_query_post_type($query) {
-    // regular post archives
-    if( ( is_category() || is_tag() ) && empty( $query->query_vars['suppress_filters'] ) ) {
-        $query->set( 'post_type', array('nav_menu_item', 'post', 'videostream') );
-        $query->set( 'orderby', 'meta_value' );
-        $query->set( 'order', 'ASC' );
-        $query->set( 'meta_key', 'event_date' );
-        return $query;   
+    if (!$query->is_admin) {
+        // regular post archives
+        if( ( is_category() || is_tag() ) && empty( $query->query_vars['suppress_filters'] ) ) {
+            $query->set( 'post_type', array('nav_menu_item', 'post', 'videostream') );
+            $query->set( 'post_status', 'publish' );   
+            $query->set( 'orderby', 'meta_value' );
+            $query->set( 'order', 'ASC' );
+            $query->set( 'meta_key', 'event_date' );
+            return $query;   
 
-    }
-    // CPT archive
-    if ( $query->is_main_query() &&  is_post_type_archive( 'videostream' ) ) {
-        $query->set( 'orderby', 'meta_value' );
-        $query->set( 'order', 'ASC' );
-        $query->set( 'meta_key', 'event_date' );   
-        return $query;
+        }
+        // CPT archive
+        if ( $query->is_main_query() &&  is_post_type_archive( 'videostream' ) ) {
+            $query->set( 'post_status', 'publish' );   
+            $query->set( 'orderby', 'meta_value' );
+            $query->set( 'order', 'ASC' );
+            $query->set( 'meta_key', 'event_date' );   
+            $query->set( 'category__not_in', array( 1 ) );   
+            return $query;
+        }
     }
     
 }
+
+/**
+ * Category archive filters
+ */
+add_action( 'pre_get_posts', 'custom_post_type_archive' );
+
+function custom_post_type_archive( $query ) {
+
+    if ( is_admin() || ! $query->is_main_query() ) {
+        return;
+    }
+
+    if( is_post_type_archive( 'videostream' ) ) {
+ 
+        $query->set( 'orderby', 'meta_value' );
+        $query->set( 'order', 'ASC' );
+        $query->set( 'meta_key', 'event_date' );  
+        $query->set( 'category__not_in', array( 1 ) );
+        
+	} else if ( is_archive() ) {
+        
+        $query->set( 'post_type', array('nav_menu_item', 'post', 'videostream') );
+        //$query->set( 'post_status', 'publish' );   
+        $query->set( 'orderby', 'meta_value' );
+        $query->set( 'order', 'ASC' );
+        $query->set( 'meta_key', 'event_date' );
+        
+    }
+
+    return $query;   
+}
+
 
 add_action( 'woocommerce_thankyou', 'suss_custom_redirect_after_purchase' );
 

@@ -61,8 +61,18 @@
 	}
 	
 	if ( have_posts() ) {
+
+		$current_user = wp_get_current_user();
+
 		echo '<hr class="post-separator styled-separator is-style-wide section-inner" aria-hidden="true" />';
-		echo '<div class="wp-block-buttons has-text-align-center"><div id="has_tickets" class="wp-block-button is-style-outline"><a href="#" onclick="show_events(true); return false;" class="wp-block-button__link">My events</a></div><div id="all_tickets" class="wp-block-button"><a href="#" onclick="show_events(false); return false;" class="wp-block-button__link">All events</a></div></div>';
+		
+		if ($current_user->ID != 0) {
+			echo '<div class="wp-block-buttons has-text-align-center">';
+			echo '<div id="has_tickets" class="wp-block-button is-style-outline"><a href="#" onclick="show_events(true); return false;" class="wp-block-button__link">My events</a></div>';
+			echo '<div id="all_tickets" class="wp-block-button"><a href="#" onclick="show_events(false); return false;" class="wp-block-button__link">All events</a></div>';
+			echo '</div>';
+		}
+		
 		//echo '<hr class="post-separator styled-separator is-style-wide section-inner" aria-hidden="true" />';
 		echo '<div class="wp-block-buttons has-text-align-center mt-2 mb-2 link-create-account"><p>If you are already a subscriber, please <a href="'. wp_login_url( get_post_type_archive_link( 'videostream' ) ) .'">login</a> to view your event tickets.</p></div>';
 
@@ -80,11 +90,11 @@
 			}
 			the_post();
 
+			$isArchive	= CFS()->get( 'archived_video', get_the_ID() );
 			$relatedTicket	= CFS()->get( 'related_ticket', get_the_ID() );
 			$relatedTicket = $relatedTicket[0]; // get item ID
 			$productURL = get_permalink( $relatedTicket );
 
-			$current_user = wp_get_current_user();
 			$msg = custom_user_product_purchased($relatedTicket);
 			
 			$eventDate	= CFS()->get( 'event_date', get_the_ID() );

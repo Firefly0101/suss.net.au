@@ -92,6 +92,9 @@
 
 								
 								if (!empty($hasVideo) && wp_http_validate_url($hasVideo)==true) {
+
+									echo '<div class="isVideo ' . ($hasLiveChat ? 'hasChat' : '') . '">';
+
 									switch($msg){
 										case 'true':
 											// show embed
@@ -120,9 +123,19 @@
 									}
 								}
 								
+								if (!empty($hasLiveChat) && $msg == 'true') {
+									echo '<div id="chat">';
+									echo '<h3 class="chat-heading has-text-align-center"><span>Live chat</span> <span> <a onclick="toggleChat(); return false;" class="chat-show" href="#">open &Downarrow;</a> <a onclick="toggleChat(); return false;" class="chat-hide" href="#">close &Uparrow;</a></span></h3>';
+									echo '';
+									echo '<div class="chat-wrapper">';
+									
+									echo $hasLiveChat;
+									echo '</div>';
+									echo '</div>';
+								}
 								//the_title( '<h1 class="entry-title">', '</h1>' );
 								
-								the_content( __( 'Continue reading', 'twentytwenty' ) );
+								//the_content( __( 'Continue reading', 'twentytwenty' ) );
 								
 							?>
 
@@ -141,15 +154,6 @@
 
 	<div class="section-inner">
 		<?php
-
-		if (!empty($hasLiveChat) && $msg == 'true') {
-			echo '<h3 class="chat-heading has-text-align-center"><span>Live chat</span> <span> <a onclick="toggleChat(); return false;" class="chat-show" href="#">open &Downarrow;</a> <a onclick="toggleChat(); return false;" class="chat-hide" href="#">close &Uparrow;</a></span></h3>';
-			echo '';
-			echo '<div class="chat-wrapper">';
-			
-			echo $hasLiveChat;
-			echo '</div>';
-		}
 
 		if (is_single()) {
 			edit_post_link();
