@@ -1,7 +1,4 @@
 
 .vscode/settings.json
-wp-content/wflogs/config-synced.php
-wp-content/wflogs/config-transient.php
-wp-content/wflogs/rules.php
-wp-content/wflogs/config-synced.php
-wp-content/wflogs/config-synced.php
+wp-content/uploads/*
+wp-content/wflogs/*.*
