@@ -57,10 +57,10 @@
 
 		// video options
 		$isAutoplay 	= false;
-		$isMuted		= 0;
-		$isControls 	= 1;
-		$isLoop 		= 0;
-		$isTransparent 	= 1; 
+		$isMuted		= false;
+		$isControls 	= true;
+		$isLoop 		= false;
+		$isTransparent 	= true; 
 
 		$productURL = get_permalink( $relatedTicket );
 		$msg = 'no-session';
@@ -100,7 +100,9 @@
 											// show embed
 											// start video wrapper
 											echo '<div id="cover-video">';
-											echo wp_oembed_get( $hasVideo, array( 'controls' => $isControls, 'muted' => $isMuted , 'transparent'=> $isTransparent, 'loop'=> $isLoop, 'autoplay' => $isAutoplay, 'color' => 'ffffff', 'portrait' => 0, 'title' => 0, 'byline' => 0 ) );
+											//echo wp_oembed_get( $hasVideo, array( 'controls' => $isControls , 'transparent'=> $isTransparent, 'loop'=> $isLoop, 'autoplay' => false, 'color' => 'ffffff',  'title' => false, 'byline' => false ) );
+											
+											echo wp_oembed_get( $hasVideo );
 											
 											// end video wrapper
 											echo '</div>';

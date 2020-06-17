@@ -246,6 +246,8 @@ function suss_extra_register_fields() {
 				'required'    => true,
 				'default'     => '',
 			));
+
+			do_action('edit_user_avatar');
 		?>
 
 	<div class="clear"></div>
@@ -296,3 +298,18 @@ function suss_save_extra_register_fields( $customer_id ) {
 	}
 }
 add_action( 'woocommerce_created_customer', 'suss_save_extra_register_fields' );
+
+/*
+* Reduce the strength requirement for woocommerce registration password.
+* Strength Settings:
+* 0 = Nothing = Anything
+* 1 = Weak
+* 2 = Medium
+* 3 = Strong (default)
+*/
+
+add_filter( 'woocommerce_min_password_strength', 'wpglorify_woocommerce_password_filter', 10 );
+
+function wpglorify_woocommerce_password_filter() {
+	return 1; // medium strength password
+} 

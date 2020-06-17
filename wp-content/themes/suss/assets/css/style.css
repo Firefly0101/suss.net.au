@@ -155,6 +155,10 @@ ul.products li.product .woocommerce-loop-product__title     { color:inherit;}
 .woocommerce-cart-form table tbody tr						{ border-color: #ccc; } 
 .single-product .summary p.price							{ margin-bottom:0; }
 
+/* related products */
+section.related.products 									{ clear: both; }
+.single-product .summary 									{ margin-bottom:2rem;}
+
 /* CHECKOUT */
 .wc_payment_methods .payment_box p                          { color: initial; }
 .woocommerce .cart-collaterals .cart_totals H2, 
@@ -242,6 +246,9 @@ UL.woocommerce-error li 									{ width: 100%; font-size: 2rem; line-height: 5r
 	.cover-header-inner { padding: 8rem 0; }
 	
 	.cover-header-inner-wrapper { justify-content:center; }
+
+	.single-videostream #cover-video, .cover-header .section-inner { width: 100%; max-width: 100%;}
+	.single-videostream #site-content .isVideo 						{ width: calc(100% - 2rem);}
 
     .article-wrapper ARTICLE HEADER .entry-categories   { display:none; }
 	.article-wrapper ARTICLE HEADER .section-inner      { justify-content: end; }

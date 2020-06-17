@@ -288,3 +288,21 @@ function suss_default_no_quantities( $individually, $product ){
     return $individually;
 }
 add_filter( 'woocommerce_is_sold_individually', 'suss_default_no_quantities', 10, 2 );
+
+// custom avatar
+add_action('init', function() {
+    add_rewrite_endpoint('profile-pic', EP_ROOT | EP_PAGES);
+});
+
+add_filter('woocommerce_account_menu_items', function($items) {
+    $logout = $items['customer-logout'];
+    unset($items['customer-logout']);
+    $items['profile-pic'] = __('Profile picture', 'txtdomain');
+    $items['customer-logout'] = $logout;
+    return $items;
+});
+
+add_action('woocommerce_account_profile-pic_endpoint', function() {
+    echo do_shortcode('[avatar_upload]');
+});
+
