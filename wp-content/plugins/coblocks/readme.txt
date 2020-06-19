@@ -1,12 +1,11 @@
 === Page Builder Gutenberg Blocks – CoBlocks ===
 Author URI: https://www.godaddy.com
-Plugin URI: https://www.coblocks.com
 Contributors: coblocks, godaddy, richtabor, phpbits, eherman24, jonathanbardo, jrtashjian, sbalakr2, dmatuszak, paranoia1906
 Tags: page builder, Gutenberg blocks, WordPress blocks, gutenberg, blocks
 Requires at least: 5.0
 Tested up to: 5.4
 Requires PHP: 5.6
-Stable tag: 1.26.1
+Stable tag: 2.0.1
 License: GPL-2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,7 +13,7 @@ CoBlocks is a suite of page builder WordPress blocks for Gutenberg, with 10+ new
 
 == Description ==
 
-[CoBlocks](https://coblocks.com?utm_medium=wp.org&utm_source=wordpressorg&utm_campaign=readme&utm_content=coblocks) is the most innovative collection of page building WordPress blocks for the new Gutenberg WordPress block editor.
+CoBlocks is the most innovative collection of page building WordPress blocks for the new Gutenberg WordPress block editor.
 
 With additional blocks and true row and column building, CoBlocks gives you a true page builder experience for Gutenberg.
 
@@ -26,7 +25,7 @@ https://www.youtube.com/watch?v=SfWoVX_uJ0M
 
 
 ## Make Beautiful Web Pages With Gutenberg & CoBlocks
-[CoBlocks](https://coblocks.com?utm_medium=wp.org&utm_source=wordpressorg&utm_campaign=readme&utm_content=coblocks) is the last page builder you’ll ever need: you get a winning mix of additional WordPress blocks, and page builder functionality. With CoBlocks you have everything you need to make beautiful web pages with the new block editor:
+CoBlocks is the last page builder you’ll ever need: you get a winning mix of additional WordPress blocks, and page builder functionality. With CoBlocks you have everything you need to make beautiful web pages with the new block editor:
 
 * Accordion Block
 * Alert Block
@@ -61,7 +60,7 @@ https://www.youtube.com/watch?v=SfWoVX_uJ0M
 * Stacked Gallery Block
 
 ## Breakthrough Page Builder System
-[CoBlocks](https://coblocks.com?utm_medium=wp.org&utm_source=wordpressorg&utm_campaign=readme&utm_content=coblocks) features an innovative block system that allows you to create stunning web pages, and even entire websites, with the new WordPress editor.
+CoBlocks features an innovative block system that allows you to create stunning web pages, and even entire websites, with the new WordPress editor.
 
 You get the extra blocks you need <em>and</em> the layout and design functionality for a true page builder experience.
 
@@ -80,15 +79,8 @@ CoBlocks is built to show off the best of Gutenberg, but it requires a Gutenberg
 ## Going Beyond Gutenberg Blocks
 The vision for CoBlocks is to create a suite of Gutenberg blocks to help folks make beautiful websites easily. These newest releases of CoBlocks is the ultimate expression of that vision.
 
-<strong>Join us</strong> in welcoming the future of WordPress blocks:
-
-* [Visit the CoBlocks website](https://coblocks.com?utm_medium=wp.org&utm_source=wordpressorg&utm_campaign=readme&utm_content=coblocks)
-* [Follow on Twitter](https://twitter.com/coblocks)
-* [Join our new Community](https://facebook.com/groups/coblocks)
-* [Like us on Facebook](https://www.facebook.com/coblocks/)
-
 ## Built With Developers in Mind
-Extensible, adaptable, and open source — CoBlocks is created with theme and plugin developers in mind. If you're intersted to jump in the project, there are opportunities for developers at all levels to get involved. [Contribute to CoBlocks on GitHub](https://github.com/godaddy-wordpress/coblocks) and join the party. 🎉
+Extensible, adaptable, and open source — CoBlocks is created with theme and plugin developers in mind. If you're interested to jump in the project, there are opportunities for developers at all levels to get involved. [Contribute to CoBlocks on GitHub](https://github.com/godaddy-wordpress/coblocks) and join the party. 🎉
 
 
 == Screenshots ==
@@ -123,6 +115,14 @@ Developers can also apply minor style touch-ups to their themes if necessary. If
 
 == Changelog ==
 
+### Enhancements
+* Social profiles: Open links in new tab [#1520](https://github.com/godaddy-wordpress/coblocks/pull/1520)
+
 ### Bug Fixes
-* Render a submit button if not found in the block content [#1479](https://github.com/godaddy-wordpress/coblocks/pull/1479)
-* Remove a condition where a variable may not be defined [#1477](https://github.com/godaddy-wordpress/coblocks/pull/1477)
+* Fix editor performance relating to advanced margins [#1543](https://github.com/godaddy-wordpress/coblocks/pull/1543)
+* Remove selected block outline for Shape Divider in G8.3+ [#1541](https://github.com/godaddy-wordpress/coblocks/pull/1541)
+* Fix primary/secondary buttons in custom components with Gutenberg active [#1532](https://github.com/godaddy-wordpress/coblocks/pull/1532)
+* Fix Services innerBlock based on column count [#1534](https://github.com/godaddy-wordpress/coblocks/pull/1534)
+
+### Misc
+* Remove reference to coblocks.com [#1540](https://github.com/godaddy-wordpress/coblocks/pull/1540)
