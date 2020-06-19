@@ -180,19 +180,6 @@ function suss_posts_buttons_text() {
   }
 }
 
-/*
-* Redirect on login or register to program list
-*/
-function suss_register_redirect( $redirect ) {
-    if ( !is_checkout() ) {
-        return wc_get_page_permalink( 'videostream' );
-    }
-}
- 
-add_filter( 'woocommerce_login_redirect', 'suss_register_redirect' );
-add_filter( 'woocommerce_registration_redirect', 'suss_register_redirect' );
-
-
 //add_filter('pre_get_posts', 'suss_query_post_type');
 function suss_query_post_type($query) {
     if (!$query->is_admin) {
@@ -261,33 +248,6 @@ function suss_custom_redirect_after_purchase( $order_id ){
         exit;
     }
 }
-
-// define the woocommerce_review_order_after_submit callback 
-function suss_woocommerce_review_order_after_submit() { 
-    echo '<div id="overlay-order" class="hide"><div class="overlay-inner"><img width="16" height="16" src="' . get_stylesheet_directory_uri() . '/assets/images/ajax-loader.gif'. '">Please wait while your order is processed.</div></div>';
-}; 
-            
-// add the action 
-add_action( 'woocommerce_review_order_after_submit', 'suss_woocommerce_review_order_after_submit', 10, 0 ); 
-
-/**
- * Redirect to checkout page on add to cart
- * Needs both options for 'add to cart' disabled /wp-admin/admin.php?page=wc-settings&tab=products
- */
-add_filter( 'woocommerce_add_to_cart_redirect', 'suss_redirect_checkout_add_cart' );
-
-function suss_redirect_checkout_add_cart() {
-   return wc_get_checkout_url();
-}
-
-/**
- * Hide stepper for products where 'sold individually' is not checked
- */
-function suss_default_no_quantities( $individually, $product ){
-    $individually = true;
-    return $individually;
-}
-add_filter( 'woocommerce_is_sold_individually', 'suss_default_no_quantities', 10, 2 );
 
 /*
 // custom avatar

@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce - Firefly customisations
  * Plugin URI: http://www.woocommerce.com/
  * Description: Use this snippet to change functionality within woocommerce outside theme
- * Version: 1.0
+ * Version: 1.0.1
  * Author: Firefly
  * Author URI: http://www.fi.net.au/
  * Developer: Firefly
@@ -118,6 +118,16 @@ function custom_woocommerce_auto_complete_order( $order_id ) {
 }
 
 /**
+ * Hide stepper for products where 'sold individually' is not checked
+ */
+function suss_default_no_quantities( $individually, $product ){
+    $individually = true;
+    return $individually;
+}
+add_filter( 'woocommerce_is_sold_individually', 'suss_default_no_quantities', 10, 2 );
+
+
+/**
  * Change the default state and country on the checkout page
  */
 add_filter( 'default_checkout_billing_country', 'change_default_checkout_country' );
@@ -184,10 +194,12 @@ function suss_extra_register_fields() {
 	if (!empty($_POST['billing_phone'])){
 		$phone = esc_attr_e($_POST['billing_phone']);
 	}
+	/*
 	$address_1 = '';
 	if (!empty($_POST['billing_address_1'])){
 		$first_name = esc_attr_e($_POST['billing_address_1']);
 	}
+	*/
 	$city = '';
 	if (!empty($_POST['billing_city'])){
 		$first_name = esc_attr_e($_POST['billing_city']);
@@ -210,10 +222,12 @@ function suss_extra_register_fields() {
 		<label for="billing_phone"><?php _e( 'Mobile', 'woocommerce' ); ?><span class="required">*</span></label>
 		<input type="tel" class="input-text" name="billing_phone" id="billing_phone" value="<?php $phone ?>" placeholder="0400123123" minlength="10" maxlength="10" required pattern="[0-9]{10}"/>
 	</p>
+	<!--
 	<p class="form-row form-row-wide">
 		<label for="billing_address_1"><?php _e( 'Address', 'woocommerce' ); ?></label>
 		<input type="text" class="input-text" name="billing_address_1" id="billing_address_1" value="<?php $billing_address_1 ?>" />
 	</p>
+	-->
 
 	<p class="form-row form-row-first">
 		<label for="billing_city"><?php _e( 'Town / City', 'woocommerce' ); ?></label>
@@ -313,3 +327,119 @@ add_filter( 'woocommerce_min_password_strength', 'wpglorify_woocommerce_password
 function wpglorify_woocommerce_password_filter() {
 	return 1; // medium strength password
 } 
+
+/**
+ * CHECKOUT OVERLAY 
+ */
+// define the woocommerce_review_order_after_submit callback 
+function suss_woocommerce_review_order_after_submit() { 
+    echo '<div id="overlay-order" class="hide"><div class="overlay-inner"><img width="16" height="16" src="' . get_stylesheet_directory_uri() . '/assets/images/ajax-loader.gif'. '">Please wait while your order is processed.</div></div>';
+}; 
+            
+// add the action 
+add_action( 'woocommerce_review_order_after_submit', 'suss_woocommerce_review_order_after_submit', 10, 0 ); 
+
+/**
+ * REDIRECT to checkout page on add to cart
+ * Needs both options for 'add to cart' disabled /wp-admin/admin.php?page=wc-settings&tab=products
+ */
+add_filter( 'woocommerce_add_to_cart_redirect', 'suss_redirect_checkout_add_cart' );
+
+function suss_redirect_checkout_add_cart() {
+   return wc_get_checkout_url();
+}
+
+/*
+* Redirect on login to program list
+*/
+function suss_login_redirect( $redirect ) {
+    if ( !is_checkout() ) {
+        return wc_get_page_permalink( 'videostream' );
+    }
+}
+ 
+add_filter( 'woocommerce_login_redirect', 'suss_login_redirect' );
+//add_filter( 'woocommerce_registration_redirect', 'suss_register_redirect' );
+
+
+function suss_registration_redirect( $redirect_to ) {     // prevents the user from logging in automatically after registering their account
+    wp_logout();
+    wp_redirect( '/verify/?n=');                        // redirects to a confirmation message
+    exit;
+}
+
+function suss_authenticate_user( $userdata ) {            // when the user logs in, checks whether their email is verified
+    $has_activation_status = get_user_meta($userdata->ID, 'is_activated', false);
+    if ($has_activation_status) {                           // checks if this is an older account without activation status; skips the rest of the function if it is
+        $isActivated = get_user_meta($userdata->ID, 'is_activated', true);
+        if ( !$isActivated ) {
+            my_user_register( $userdata->ID );              // resends the activation mail if the account is not activated
+            $userdata = new WP_Error(
+                'my_theme_confirmation_error',
+                __( '<strong>Error:</strong> Your account has to be activated before you can login. Please click the link in the activation email that has been sent to you.<br /> If you do not receive the activation email within a few minutes, check your spam folder or <a href="/verify/?u='.$userdata->ID.'">click here to resend it</a>.' )
+            );
+        }
+    }
+    return $userdata;
+}
+
+function suss_user_register($user_id) {               // when a user registers, sends them an email to verify their account
+    $user_info = get_userdata($user_id);                                            // gets user data
+    $code = md5(time());                                                            // creates md5 code to verify later
+    $string = array('id'=>$user_id, 'code'=>$code);                                 // makes it into a code to send it to user via email
+    update_user_meta($user_id, 'is_activated', 0);                                  // creates activation code and activation status in the database
+    update_user_meta($user_id, 'activationcode', $code);
+    $url = get_site_url(). '/verify/?p=' .base64_encode( serialize($string));       // creates the activation url
+    $html = ( 'Please click <a href="'.$url.'">here</a> to verify your email address and complete the registration process.' ); // This is the html template for your email message body
+    wc_mail($user_info->user_email, __( 'Activate your Account' ), $html);          // sends the email to the user
+}
+
+function suss_verification_init(){                                 			// handles all this verification stuff
+    if(isset($_GET['p'])){                                                  // If accessed via an authentification link
+        $data = unserialize(base64_decode($_GET['p']));
+        $code = get_user_meta($data['id'], 'activationcode', true);
+        $isActivated = get_user_meta($data['id'], 'is_activated', true);    // checks if the account has already been activated. Prevents logins with an outdated confirmation link
+        if( $isActivated ) {                                                // generates an error message if the account was already active
+            wc_add_notice( __( 'This account has already been activated. Please log in with your username and password.' ), 'error' );
+        }
+        else {
+            if($code == $data['code']){                                     // checks whether the decoded code given is the same as the one in the data base
+                update_user_meta($data['id'], 'is_activated', 1);           // updates the database upon successful activation
+                $user_id = $data['id'];                                     // logs the user in
+                $user = get_user_by( 'id', $user_id ); 
+                if( $user ) {
+                    wp_set_current_user( $user_id, $user->user_login );
+                    wp_set_auth_cookie( $user_id );
+                    do_action( 'wp_login', $user->user_login, $user );
+                }
+				wc_add_notice( __( '<p><strong>Success:</strong> Your account has been activated! You have been logged in. View events:'. wc_get_page_permalink( 'videostream' ) .'</p>' ), 'notice' );
+				
+            } else {
+                wc_add_notice( __( '<p><strong>Error:</strong> Account activation failed. <br/><br/>Please try again in a few minutes or <a href="/verify/?u='.$userdata->ID.'">resend the activation email</a>.<br />Please note that any activation links previously sent lose their validity as soon as a new activation email gets sent.<br />If the verification fails repeatedly, please contact our administrator.</p>' ), 'error' );
+            }
+        }
+    }
+    if(isset($_GET['u'])){ 
+		// If resending confirmation mail
+        my_user_register($_GET['u']);
+        wc_add_notice( __( '<p>Your activation email has been resent. Please check your email and your spam folder.</p>' ), 'notice' );
+    }
+    if(isset($_GET['n'])){
+		// If account has been freshly created
+        wc_add_notice( __( '<p>Thank you for creating your account. You will need to confirm your email address in order to activate your account.<br/><br/>An email containing the activation link has been sent to your email address. If the email does not arrive within a few minutes, check your spam folder.</p>' ), 'notice' );
+    }
+}
+
+// the hooks to make it all work
+add_action( 'init', 'suss_verification_init' );
+add_filter('woocommerce_registration_redirect', 'suss_registration_redirect');
+add_filter('wp_authenticate_user', 'suss_authenticate_user',10,2);
+add_action('user_register', 'suss_user_register',10,2);
+
+
+//[show_wc_notices]
+function suss_show_wc_notices( $atts ){
+
+	return wc_print_notices();
+}
+add_shortcode( 'show_wc_notices', 'suss_show_wc_notices' );
