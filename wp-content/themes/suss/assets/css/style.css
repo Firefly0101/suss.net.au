@@ -139,6 +139,7 @@ height: 100%;}
 * WOOCOMMERCE
 ****************/
 
+.woocommerce-breadcrumb,
 .logged-in .link-create-account,
 .logged-in .btn-create-account,
 .logged-in .text-create-account 							{ display:none; }
