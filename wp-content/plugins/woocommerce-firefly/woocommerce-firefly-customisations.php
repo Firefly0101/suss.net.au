@@ -354,7 +354,7 @@ function suss_redirect_checkout_add_cart() {
 */
 function suss_login_redirect( $redirect ) {
     if ( !is_checkout() ) {
-        return wc_get_page_permalink( 'videostream' );
+        return home_url('/videostream');
     }
 }
  
@@ -363,9 +363,10 @@ add_filter( 'woocommerce_login_redirect', 'suss_login_redirect' );
 
 
 function suss_registration_redirect( $redirect_to ) {     // prevents the user from logging in automatically after registering their account
-    wp_logout();
-    wp_redirect( '/verify/?n=');                        // redirects to a confirmation message
-    exit;
+	wp_logout();
+    //wp_redirect( '/verify/?n=');               // redirects to a confirmation message
+    return '/verify/?n=';                        // redirects to a confirmation message
+    //exit;
 }
 
 function suss_authenticate_user( $userdata ) {            // when the user logs in, checks whether their email is verified
@@ -373,10 +374,10 @@ function suss_authenticate_user( $userdata ) {            // when the user logs 
     if ($has_activation_status) {                           // checks if this is an older account without activation status; skips the rest of the function if it is
         $isActivated = get_user_meta($userdata->ID, 'is_activated', true);
         if ( !$isActivated ) {
-            my_user_register( $userdata->ID );              // resends the activation mail if the account is not activated
+            suss_user_register( $userdata->ID );              // resends the activation mail if the account is not activated
             $userdata = new WP_Error(
                 'my_theme_confirmation_error',
-                __( '<strong>Error:</strong> Your account has to be activated before you can login. Please click the link in the activation email that has been sent to you.<br /> If you do not receive the activation email within a few minutes, check your spam folder or <a href="/verify/?u='.$userdata->ID.'">click here to resend it</a>.' )
+                __( '<p><strong>Error:</strong> Your account has to be activated before you can login. Please click the link in the activation email that has been sent to you.<br /> If you do not receive the activation email within a few minutes, check your spam folder or <a href="/verify/?u='.$userdata->ID.'">click here to resend it</a>.</p>' )
             );
         }
     }
@@ -385,22 +386,35 @@ function suss_authenticate_user( $userdata ) {            // when the user logs 
 
 function suss_user_register($user_id) {               // when a user registers, sends them an email to verify their account
     $user_info = get_userdata($user_id);                                            // gets user data
-    $code = md5(time());                                                            // creates md5 code to verify later
-    $string = array('id'=>$user_id, 'code'=>$code);                                 // makes it into a code to send it to user via email
-    update_user_meta($user_id, 'is_activated', 0);                                  // creates activation code and activation status in the database
-    update_user_meta($user_id, 'activationcode', $code);
+    $code = md5(time());                                                            // creates md5 hash to verify later
+    $string = array('id'=>$user_id, 'code'=>$code);                                 // make OTP to email to user
+	
+	update_user_meta($user_id, 'is_activated', 0);                                  // creates activation code and activation status in the database
+	update_user_meta($user_id, 'activationcode', $code);
+	
+	
     $url = get_site_url(). '/verify/?p=' .base64_encode( serialize($string));       // creates the activation url
-    $html = ( 'Please click <a href="'.$url.'">here</a> to verify your email address and complete the registration process.' ); // This is the html template for your email message body
-    wc_mail($user_info->user_email, __( 'Activate your Account' ), $html);          // sends the email to the user
+    //$html = ( 'Please click <a href="'.$url.'">here</a> to verify your email address and complete the registration process.' ); // This is the html template for your email message body
+	
+	
+	$html = ('<p>Hi,</p>
+			<p>Thanks for creating an account on Sydney Underground Streaming Sessions. You can access your account area to view orders, change your password, and more at: https://suss.fireflydigital.dev/my-account/</p>
+			<p>Please click <a href="'.$url.'">here</a> to verify your email address and activate your account.</p>
+			<p>We look forward to seeing you soon.</p>');
+
+	wc_mail($user_info->user_email, __( 'Activate your Sydney Underground Streaming Sessions account' ), $html);          // sends the email to the user
 }
 
-function suss_verification_init(){                                 			// handles all this verification stuff
+function suss_verification_init(){      // handles all this verification stuff
+	$videoUrl 	= home_url('/videostream');
+	$accountUrl = home_url('/my-account');
+	                           			
     if(isset($_GET['p'])){                                                  // If accessed via an authentification link
         $data = unserialize(base64_decode($_GET['p']));
         $code = get_user_meta($data['id'], 'activationcode', true);
         $isActivated = get_user_meta($data['id'], 'is_activated', true);    // checks if the account has already been activated. Prevents logins with an outdated confirmation link
         if( $isActivated ) {                                                // generates an error message if the account was already active
-            wc_add_notice( __( 'This account has already been activated. Please log in with your username and password.' ), 'error' );
+            wc_add_notice( __( '<p>This account has already been activated. Please <a href="' . $accountUrl . '">login</a> with your username and password.</p>' ), 'notice' );
         }
         else {
             if($code == $data['code']){                                     // checks whether the decoded code given is the same as the one in the data base
@@ -411,23 +425,26 @@ function suss_verification_init(){                                 			// handles
                     wp_set_current_user( $user_id, $user->user_login );
                     wp_set_auth_cookie( $user_id );
                     do_action( 'wp_login', $user->user_login, $user );
-                }
-				wc_add_notice( __( '<p><strong>Success:</strong> Your account has been activated! You have been logged in. View events:'. wc_get_page_permalink( 'videostream' ) .'</p>' ), 'notice' );
+				}
+				
+
+				wc_add_notice( __( '<p><strong>Success:</strong> Your account has been activated! You have been logged in. <a href="'. $videoUrl .'">View events.</a></p>' ), 'notice' );
 				
             } else {
-                wc_add_notice( __( '<p><strong>Error:</strong> Account activation failed. <br/><br/>Please try again in a few minutes or <a href="/verify/?u='.$userdata->ID.'">resend the activation email</a>.<br />Please note that any activation links previously sent lose their validity as soon as a new activation email gets sent.<br />If the verification fails repeatedly, please contact our administrator.</p>' ), 'error' );
+                wc_add_notice( __( '<p><strong>Error:</strong> Account activation failed. <br/><br/>Please try again in a few minutes or <a href="/verify/?u='.$userdata->ID.'">resend the activation email</a>.<br />Please note that any activation links previously sent lose their validity as soon as a new activation email gets sent.<br />If the verification fails repeatedly, please contact our administrator.</p>' ), 'notice' );
             }
         }
     }
     if(isset($_GET['u'])){ 
 		// If resending confirmation mail
-        my_user_register($_GET['u']);
+        suss_user_register($_GET['u']);
         wc_add_notice( __( '<p>Your activation email has been resent. Please check your email and your spam folder.</p>' ), 'notice' );
     }
     if(isset($_GET['n'])){
 		// If account has been freshly created
         wc_add_notice( __( '<p>Thank you for creating your account. You will need to confirm your email address in order to activate your account.<br/><br/>An email containing the activation link has been sent to your email address. If the email does not arrive within a few minutes, check your spam folder.</p>' ), 'notice' );
-    }
+	}
+
 }
 
 // the hooks to make it all work
@@ -436,10 +453,14 @@ add_filter('woocommerce_registration_redirect', 'suss_registration_redirect');
 add_filter('wp_authenticate_user', 'suss_authenticate_user',10,2);
 add_action('user_register', 'suss_user_register',10,2);
 
-
 //[show_wc_notices]
 function suss_show_wc_notices( $atts ){
-
-	return wc_print_notices();
+	$notices = "";
+	if(!is_admin()) {
+		$notices = wc_print_notices();
+	}
+	
+	return $notices;
 }
+
 add_shortcode( 'show_wc_notices', 'suss_show_wc_notices' );
