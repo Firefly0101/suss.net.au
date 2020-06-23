@@ -464,3 +464,56 @@ function suss_show_wc_notices( $atts ){
 }
 
 add_shortcode( 'show_wc_notices', 'suss_show_wc_notices' );
+
+add_action( 'show_user_profile', 'suss_get_extra_user_profile_fields' );
+
+add_action( 'edit_user_profile', 'suss_extra_user_profile_fields' );
+
+add_action( 'personal_options_update', 'suss_save_extra_user_profile_fields' );
+add_action( 'edit_user_profile_update', 'suss_save_extra_user_profile_fields' );
+
+function suss_get_extra_user_profile_fields( $user ) {
+    $meta = get_user_meta($user->ID, 'is_activated', true);
+}
+
+function suss_save_extra_user_profile_fields( $user_id ) {
+    if ( !current_user_can( 'edit_user', $user_id ) ) { 
+        return false; 
+    }
+
+    update_user_meta( $user_id, 'is_activated', $_POST['is_activated'] );
+}
+
+function suss_extra_user_profile_fields( $user ) { 
+	// set defaults
+	$isConfirmed = esc_attr( get_user_meta($user->ID, 'is_activated', true) ); 
+
+	if( empty($isConfirmed) ) { 
+		$isConfirmed = '0';
+	}
+
+	//var_dump($isConfirmed);
+
+	?>
+    <h3><?php _e("Extra profile information", "blank"); ?></h3>
+
+    <table class="form-table">
+    <tr>
+        <th><label for="is_activated"><?php _e("Email is confirmed"); ?></label></th>
+        <td>			
+			<div>
+				<input type="radio" id="is_activated_yes" name="is_activated" value="1" <?php if( $isConfirmed == '1') { echo 'checked'; } ?> >
+				<label for="is_activated_yes">Yes</label>
+			</div>
+
+			<div>
+				<input type="radio" id="is_activated_no" name="is_activated" value="0" <?php if( $isConfirmed == '0') { echo 'checked'; } ?>>
+				<label for="is_activated_no">No</label>
+			</div>
+			<span class="description"><?php _e("Is the email verified?"); ?></span>
+		</td>
+		
+    </tr>
+    </table>
+<?php 
+}
