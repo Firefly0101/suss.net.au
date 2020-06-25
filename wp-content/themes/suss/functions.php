@@ -180,7 +180,7 @@ function suss_posts_buttons_text() {
   }
 }
 
-//add_filter('pre_get_posts', 'suss_query_post_type');
+add_filter('pre_get_posts', 'suss_query_post_type');
 function suss_query_post_type($query) {
     if (!$query->is_admin) {
         // regular post archives
@@ -205,38 +205,6 @@ function suss_query_post_type($query) {
     }
     
 }
-
-/**
- * Category archive filters
- */
-add_action( 'pre_get_posts', 'custom_post_type_archive' );
-
-function custom_post_type_archive( $query ) {
-
-    if ( is_admin() || ! $query->is_main_query() ) {
-        return;
-    }
-
-    if( is_post_type_archive( 'videostream' ) ) {
- 
-        $query->set( 'orderby', 'meta_value' );
-        $query->set( 'order', 'ASC' );
-        $query->set( 'meta_key', 'event_date' );  
-        $query->set( 'category__not_in', array( 1 ) );
-        
-	} else if ( is_archive() ) {
-        
-        $query->set( 'post_type', array('nav_menu_item', 'post', 'videostream') );
-        //$query->set( 'post_status', 'publish' );   
-        $query->set( 'orderby', 'meta_value' );
-        $query->set( 'order', 'ASC' );
-        $query->set( 'meta_key', 'event_date' );
-        
-    }
-
-    return $query;   
-}
-
 
 add_action( 'woocommerce_thankyou', 'suss_custom_redirect_after_purchase' );
 
