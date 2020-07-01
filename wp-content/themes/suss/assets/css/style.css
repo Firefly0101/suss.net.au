@@ -121,6 +121,12 @@ height: 100%;}
 .menu-modal.active .menu-modal-inner { background: #1b7eb0; }
 .menu-modal.active A { color: #FFF; }
 
+/*************
+* FOOTER
+**************/
+.footer-menu li { display: inline-flex; }
+.footer-menu li A { font-size:1.75rem; }
+
 /*****************
 * SPONSORS
 *****************/
