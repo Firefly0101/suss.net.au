@@ -359,7 +359,7 @@ function suss_login_redirect( $redirect ) {
 }
  
 add_filter( 'woocommerce_login_redirect', 'suss_login_redirect' );
-//add_filter( 'woocommerce_registration_redirect', 'suss_register_redirect' );
+add_filter( 'woocommerce_registration_redirect', 'suss_login_redirect' );
 
 
 function suss_registration_redirect( $redirect_to ) {     // prevents the user from logging in automatically after registering their account
@@ -448,10 +448,10 @@ function suss_verification_init(){      // handles all this verification stuff
 }
 
 // the hooks to make it all work
-add_action( 'init', 'suss_verification_init' );
-add_filter('woocommerce_registration_redirect', 'suss_registration_redirect');
-add_filter('wp_authenticate_user', 'suss_authenticate_user',10,2);
-add_action('user_register', 'suss_user_register',10,2);
+//add_action( 'init', 'suss_verification_init' );
+//add_filter('woocommerce_registration_redirect', 'suss_registration_redirect');
+//add_filter('wp_authenticate_user', 'suss_authenticate_user',10,2);
+//add_action('user_register', 'suss_user_register',10,2);
 
 //[show_wc_notices]
 function suss_show_wc_notices( $atts ){
@@ -464,7 +464,6 @@ function suss_show_wc_notices( $atts ){
 }
 
 add_shortcode( 'show_wc_notices', 'suss_show_wc_notices' );
-
 add_action( 'show_user_profile', 'suss_get_extra_user_profile_fields' );
 
 add_action( 'edit_user_profile', 'suss_extra_user_profile_fields' );
