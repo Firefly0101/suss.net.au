@@ -1,6 +1,7 @@
 
 // setup globals
 var $loggedin = false;
+var $hasclick = '';
 
 // get     
 function show_events(type){
@@ -40,6 +41,12 @@ function checkIsLoggedIn(user) {
     }
 }
 
+function toggleChat() {
+    jQuery('.chat-wrapper').toggle();
+    jQuery('.chat-show').toggle();
+    jQuery('.chat-hide').toggle();
+}
+
 jQuery(function() {
     var hash = window.location.hash;
     if (hash.length > 0 && hash == '#myevents') {
@@ -48,6 +55,27 @@ jQuery(function() {
     }
 
     $loggedin = jQuery('BODY').hasClass('logged-in');
-    console.log($loggedin);
+    //console.log($loggedin);
+    jQuery('.chat-show').toggle();
+
+    jQuery("form.woocommerce-checkout").on('submit', function() { 
+        if ( $loggedin == false) {
+            jQuery('#overlay-order').css('visibility','hidden');
+        } else {
+            console.log('show overlay');
+            jQuery('#overlay-order').css('visibility','visible');
+        }
+    } ); 
+
+    /*
+    $hasclick = jQuery("[id=place_order]");
+    console.log($hasclick);
+
+    jQuery( "[id=place_order]" ).click(function() {
+        jQuery('#overlay-order').css('visibility','visible');
+        console.log('show overlay');
+    });
+    */
+
  });
 

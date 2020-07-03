@@ -1,5 +1,46 @@
 <?php
 
+/*
+carbon fields setup
+*/
+
+/*
+use Carbon_Fields\Container;
+use Carbon_Fields\Field;
+
+add_action( 'carbon_fields_register_fields', 'suss_add_custom_fields' );
+function suss_add_custom_fields() {
+    
+    Container::make( 'post_meta', __( 'Video Options' ) )
+    ->where( 'post_type', '=', 'videostream' )
+    ->add_fields( array(
+        Field::make( 'text', '_video_stream_url', 'Video Stream URL' )
+        ->set_required( true ),
+        Field::make( 'text', '_vimeo_chat_embed', 'Video Chat embed' ),
+        Field::make( 'radio', '_archived_video', __( 'Is this video archived?' ) )
+        ->set_width(50)
+        ->set_options( array(
+            0 => 'No',
+            1 => 'Yes',
+        ) ),
+        Field::make( 'date_time', '_event_date', 'Event Date' )
+            ->set_attribute( 'placeholder', 'Date and time of event start' )
+            ->set_width(50)
+            ->set_required( true ),
+        Field::make( 'association', '_related_ticket' )
+            ->set_types( array(
+                array(
+                    'type' => 'post',
+                    'post_type' => 'product',
+                ),
+            ) )
+            ->set_max( 1 )
+            ->set_required( true )
+    ) );
+
+}
+*/
+
 /**
  * Enqueue styles
  */
@@ -139,66 +180,58 @@ function suss_posts_buttons_text() {
   }
 }
 
-/*
-* Redirect on login or register to program list
-*/
-function suss_register_redirect( $redirect ) {
-    if ( !is_checkout() ) {
-        return wc_get_page_permalink( 'videostream' );
-    }
-}
- 
-add_filter( 'woocommerce_login_redirect', 'suss_register_redirect' );
-add_filter( 'woocommerce_registration_redirect', 'suss_register_redirect' );
-
-
 add_filter('pre_get_posts', 'suss_query_post_type');
 function suss_query_post_type($query) {
-    // regular post archives
-    if( ( is_category() || is_tag() ) && empty( $query->query_vars['suppress_filters'] ) ) {
-        $query->set( 'post_type', array('nav_menu_item', 'post', 'videostream') );
-        $query->set( 'orderby', 'meta_value' );
-        $query->set( 'order', 'ASC' );
-        $query->set( 'meta_key', 'event_date' );
-        return $query;   
+    if (!$query->is_admin) {
+        // regular post archives
+        if( ( is_category() || is_tag() ) && empty( $query->query_vars['suppress_filters'] ) ) {
+            $query->set( 'post_type', array('nav_menu_item', 'post', 'videostream') );
+            $query->set( 'post_status', 'publish' );   
+            $query->set( 'orderby', 'meta_value' );
+            $query->set( 'order', 'ASC' );
+            $query->set( 'meta_key', 'event_date' );
+            return $query;   
 
-    }
-    // CPT archive
-    if ( $query->is_main_query() &&  is_post_type_archive( 'videostream' ) ) {
-        $query->set( 'orderby', 'meta_value' );
-        $query->set( 'order', 'ASC' );
-        $query->set( 'meta_key', 'event_date' );   
-        return $query;
+        }
+        // CPT archive
+        if ( $query->is_main_query() &&  is_post_type_archive( 'videostream' ) ) {
+            $query->set( 'post_status', 'publish' );   
+            $query->set( 'orderby', 'meta_value' );
+            $query->set( 'order', 'ASC' );
+            $query->set( 'meta_key', 'event_date' );   
+            $query->set( 'category__not_in', array( 1 ) );   
+            return $query;
+        }
     }
     
 }
 
-add_action( 'template_redirect', 'suss_custom_redirect_after_purchase' );
-function suss_custom_redirect_after_purchase() {
-	global $wp;
-	if ( is_checkout() && !empty( $wp->query_vars['order-received'] ) ) {
-        $redirect = get_post_type_archive_link( 'videostream' );
-        $redirect .= "#myevents";
-		wp_redirect( get_post_type_archive_link( $redirect ) );
-		exit;
-	}
+add_action( 'woocommerce_thankyou', 'suss_custom_redirect_after_purchase' );
+
+function suss_custom_redirect_after_purchase( $order_id ){
+    $order = wc_get_order( $order_id );
+    $url = get_post_type_archive_link( 'videostream' );
+    if ( ! $order->has_status( 'failed' ) ) {
+        wp_safe_redirect( $url . "#myevents");
+        exit;
+    }
 }
 
-/**
- * Redirect to checkout page on add to cart
- * Needs both options for 'add to cart' disabled /wp-admin/admin.php?page=wc-settings&tab=products
- */
-add_filter( 'woocommerce_add_to_cart_redirect', 'suss_redirect_checkout_add_cart' );
+/*
+// custom avatar
+add_action('init', function() {
+    add_rewrite_endpoint('profile-pic', EP_ROOT | EP_PAGES);
+});
 
-function suss_redirect_checkout_add_cart() {
-   return wc_get_checkout_url();
-}
+add_filter('woocommerce_account_menu_items', function($items) {
+    $logout = $items['customer-logout'];
+    unset($items['customer-logout']);
+    $items['profile-pic'] = __('Profile picture', 'txtdomain');
+    $items['customer-logout'] = $logout;
+    return $items;
+});
 
-/**
- * Hide stepper for products where 'sold individually' is not checked
- */
-function suss_default_no_quantities( $individually, $product ){
-    $individually = true;
-    return $individually;
-}
-add_filter( 'woocommerce_is_sold_individually', 'suss_default_no_quantities', 10, 2 );
+add_action('woocommerce_account_profile-pic_endpoint', function() {
+    echo do_shortcode('[avatar_upload]');
+});
+*/

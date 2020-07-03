@@ -77,7 +77,7 @@
 							$isLoop 		= CFS()->get( 'video_loop', get_the_ID() );
 							$isTransparent 	= CFS()->get( 'video_transparent', get_the_ID() );
 
-							$videoClass = 'hasVideo';
+							$videoClass = '';
 
 							if (!empty($hasVideo)) {
 								$videoClass = 'hasVideo';
